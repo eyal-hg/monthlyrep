@@ -6,156 +6,206 @@
 <title>דו״ח תזרים חודשי עתידי · יעדים</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 <style>
 :root{
-  --bg:#f4f7fb; --surface:#ffffff; --surface-alt:#f9fbfd;
-  --border:#e3eaf2; --border-strong:#cdd8e6;
-  --text:#1c2a3a; --text-muted:#6b7a90; --text-soft:#9aa7bb;
-  --accent:#1f7ae0; --accent-soft:#e8f1fc;
-  --positive:#1f8a5a; --positive-soft:#e6f6ee;
-  --negative:#d6453c; --negative-soft:#fdeceb;
-  --warn:#c98404; --warn-soft:#fdf3e2;
-  --target-income:#1f8a5a; --target-expense:#c98404;
-  --shadow-sm:0 1px 2px rgba(15,35,65,.04);
-  --shadow-md:0 8px 24px rgba(15,35,65,.08);
-  --shadow-lg:0 18px 48px rgba(15,35,65,.16);
-  --radius-sm:6px; --radius-md:10px; --radius-lg:14px;
+  --bg:#eef2f8; --surface:#ffffff; --surface-alt:#f8fafc;
+  --border:#e6ecf4; --border-strong:#d3dced;
+  --text:#16243a; --text-muted:#64748b; --text-soft:#9aa7bb;
+  --accent:#1f7ae0; --accent-2:#0ea5a5; --accent-soft:#eaf3fd;
+  --positive:#13895b; --positive-soft:#e7f7ef;
+  --negative:#dc4436; --negative-soft:#fdeceb;
+  --warn:#c98404; --warn-soft:#fdf4e3;
+  --shadow-xs:0 1px 2px rgba(15,35,65,.05);
+  --shadow-sm:0 2px 8px rgba(15,35,65,.06);
+  --shadow-md:0 10px 30px rgba(15,35,65,.09);
+  --shadow-lg:0 24px 60px rgba(15,35,65,.20);
+  --r-sm:8px; --r-md:12px; --r-lg:18px; --r-xl:22px;
 }
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;font-family:"Heebo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.4}
+html,body{margin:0;padding:0;font-family:"Heebo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:
+  radial-gradient(1200px 480px at 85% -10%, #e8f0fb 0%, rgba(238,242,248,0) 60%),
+  radial-gradient(900px 420px at 0% 0%, #e9f6f4 0%, rgba(238,242,248,0) 55%),
+  var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.45}
 button{font-family:inherit;cursor:pointer}
-.app{max-width:1180px;margin:0 auto;padding:28px 24px 80px}
+.app{max-width:1200px;margin:0 auto;padding:34px 26px 90px}
 
-/* Header */
-.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
-.page-head h1{font-size:23px;font-weight:800;margin:0;letter-spacing:-.3px}
-.page-head .sub{color:var(--text-muted);font-size:13.5px;margin-top:6px;max-width:680px}
-.brand{display:flex;align-items:center;gap:10px}
-.brand .dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#1f7ae0,#0ea5a5);box-shadow:var(--shadow-sm);display:grid;place-items:center;color:#fff;font-weight:800;font-size:15px}
+/* ---------- Page header ---------- */
+.page-head{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.brand .dot{width:46px;height:46px;border-radius:14px;background:linear-gradient(140deg,#2a86ec,#0ea5a5);box-shadow:0 8px 20px rgba(20,120,200,.35);display:grid;place-items:center;color:#fff;font-weight:900;font-size:18px;letter-spacing:.5px}
+.page-head h1{font-size:25px;font-weight:900;margin:0;letter-spacing:-.4px}
+.page-head .sub{color:var(--text-muted);font-size:13.5px;margin-top:4px;max-width:720px}
 
-/* Legend */
-.legend{display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 16px;margin-bottom:14px;box-shadow:var(--shadow-sm)}
-.legend .grp{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-muted)}
-.legend .swatch{width:34px;height:20px;border-radius:6px;display:grid;place-items:center;font-size:11px;font-weight:700}
-.sw-avg{background:var(--surface-alt);border:1px dashed var(--border-strong);color:var(--text-soft)}
-.sw-edit{background:var(--accent-soft);border:1px solid #bcd9f6;color:var(--accent)}
-.sw-tin{background:var(--positive-soft);border:1px solid #b9e6cd;color:var(--target-income)}
-.sw-tex{background:var(--warn-soft);border:1px solid #f0d9a6;color:var(--target-expense)}
-.legend .sep{width:1px;height:22px;background:var(--border)}
+/* ---------- Legend chips ---------- */
+.legend{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.lchip{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 12px;font-size:12px;color:var(--text-muted);box-shadow:var(--shadow-xs)}
+.lchip .swatch{width:16px;height:16px;border-radius:5px;display:inline-block}
+.sw-avg{background:repeating-linear-gradient(45deg,#eef2f8,#eef2f8 3px,#e0e7f1 3px,#e0e7f1 6px);border:1px solid var(--border-strong)}
+.sw-edit{background:var(--accent-soft);border:1px solid #bcd9f6}
+.sw-tin{background:linear-gradient(135deg,#d8f2e4,#bdeacf);border:1px solid #a7e0bf}
+.sw-tex{background:linear-gradient(135deg,#fbeecb,#f6e0a8);border:1px solid #ecd193}
 
-/* Table */
-.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);overflow:auto}
-table{border-collapse:separate;border-spacing:0;width:100%;min-width:820px}
-thead th{position:sticky;top:0;z-index:5;background:var(--surface);font-weight:700;font-size:12.5px;color:var(--text-muted);padding:10px 12px;text-align:center;border-bottom:1px solid var(--border);white-space:nowrap}
-thead th.cat{inset-inline-end:0;z-index:7;text-align:start;min-width:220px;background:var(--surface)}
-thead .tag{display:block;font-size:10.5px;font-weight:600;margin-top:3px}
-.tag-actual{color:var(--text-soft)} .tag-current{color:var(--accent)} .tag-future{color:var(--positive)}
-th.mhead.current,th.shead{background:var(--accent-soft);color:#155bb0}
-th.mhead.avgcol{background:#eef3f9;color:#33486a}
-th.shead{font-size:11.5px;border-bottom:1px solid var(--border)}
+/* ---------- Card ---------- */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);box-shadow:var(--shadow-md);overflow:hidden}
+.card-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 20px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#fcfdff,#f6f9fd)}
+.card-bar .ttl{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:800}
+.card-bar .ttl .ic{width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:15px}
+.toolbar{display:flex;align-items:center;gap:8px}
+.pill{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border-strong);border-radius:999px;padding:7px 13px;font-size:12.5px;font-weight:600;color:var(--text);box-shadow:var(--shadow-xs)}
+.pill .mut{color:var(--text-soft);font-weight:500}
+.pill svg{opacity:.5}
+.iconbtn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border-strong);background:var(--surface);display:grid;place-items:center;color:var(--text-muted);box-shadow:var(--shadow-xs)}
+.iconbtn:hover{color:var(--accent);border-color:#bcd9f6;background:var(--accent-soft)}
+
+/* ---------- Table ---------- */
+.table-wrap{overflow:auto}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:860px}
+thead th{position:sticky;top:0;z-index:5;background:#fff;font-weight:700;font-size:12.5px;color:var(--text-muted);padding:12px 14px;text-align:center;white-space:nowrap;border-bottom:1px solid var(--border)}
+thead th .mname{font-size:13.5px;font-weight:800;color:var(--text)}
+thead .tag{display:inline-block;margin-top:5px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:.2px}
+.tag-actual{background:#eef2f8;color:#6b7a90}
+.tag-current{background:var(--accent-soft);color:#1668c4}
+.tag-future{background:var(--positive-soft);color:#0f7a50}
+thead th.cat{inset-inline-end:0;z-index:7;text-align:start;min-width:226px;background:#fff;box-shadow:1px 0 0 var(--border)}
+thead th.avgcol{background:#f3f6fb}
+thead th.cur-h{background:linear-gradient(180deg,#eaf3fd,#e2eefb);color:#155bb0;box-shadow:inset 0 3px 0 var(--accent)}
+thead th.shead{font-size:11.5px;background:#eef5fd;color:#2a6fc0;padding:7px}
+thead th.shead.s-tgt{box-shadow:inset 2px 0 0 #cfe4fa}
 
 td,tbody th{padding:0;border-bottom:1px solid var(--border)}
-tbody th.cat{position:sticky;inset-inline-end:0;z-index:3;background:var(--surface);text-align:start;font-weight:600;font-size:13px;padding:10px 14px;color:var(--text);min-width:220px;border-inline-start:1px solid var(--border)}
-.cell{padding:8px 12px;text-align:center;font-variant-numeric:tabular-nums;font-weight:500;color:var(--text);white-space:nowrap}
-.cell.empty{color:var(--text-soft)}
+tbody th.cat{position:sticky;inset-inline-end:0;z-index:3;background:#fff;text-align:start;font-weight:600;font-size:13px;padding:11px 16px;color:var(--text);min-width:226px;box-shadow:1px 0 0 var(--border)}
+.cell{padding:9px 14px;text-align:center;font-variant-numeric:tabular-nums;font-weight:600;color:var(--text);white-space:nowrap;letter-spacing:-.2px}
+.cell.empty{color:var(--text-soft);font-weight:500}
 .neg{color:var(--negative)} .pos{color:var(--positive)}
-.avgc{background:#f6f9fc}
+.avgc{background:#f7f9fc}
+.curband{background:#f4f9ff}
+.curband.s-tgt{box-shadow:inset 2px 0 0 #d8e9fb}
 
 /* row kinds */
-tr.section th.cat{background:#eef3f9;color:#33486a;font-weight:800;font-size:11.5px;letter-spacing:.4px}
-tr.section td{background:#eef3f9}
+tr.section th.cat{background:#f1f5fb;color:#33486a;font-weight:900;font-size:11px;letter-spacing:1.2px}
+tr.section th.cat::before{content:"";display:inline-block;width:8px;height:8px;border-radius:3px;margin-inline-end:8px;vertical-align:1px;background:var(--accent)}
+tr.section.exp th.cat::before{background:var(--warn)}
+tr.section td{background:#f1f5fb}
 tr.summary th.cat,tr.summary .cell{font-weight:800}
 tr.summary td,tr.summary th.cat{background:var(--surface-alt)}
-tr.total th.cat,tr.total .cell{font-weight:800}
+tr.summary.net td,tr.summary.net th.cat{background:#eef4fc}
+tr.summary.net th.cat,tr.summary.net .cell{font-weight:900}
+tr.total th.cat,tr.total .cell{font-weight:900}
 tr.total.income td,tr.total.income th.cat{background:var(--positive-soft)}
-tr.total.expense td,tr.total.expense th.cat{background:var(--negative-soft)}
-tr.summary.net td,tr.summary.net th.cat{background:var(--accent-soft)}
-tr.data:hover td{background:#f6f9fd}
+tr.total.income th.cat{color:#0f7a50}
+tr.total.expense td,tr.total.expense th.cat{background:var(--warn-soft)}
+tr.total.expense th.cat{color:#9a6604}
+tr.data:hover td{background:#f2f8ff}
+tr.data:hover th.cat{background:#f2f8ff}
+
+/* profit tiers */
+tr.profit td,tr.profit th.cat{background:linear-gradient(180deg,#eef6ff,#e4eefb);border-top:1px solid #d3e3f6}
+tr.profit th.cat{color:#15498f;font-weight:900;font-size:13.5px}
+tr.profit .cell{font-weight:900;font-size:14px;color:#15498f}
+tr.profit th.cat::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-inline-end:8px;vertical-align:1px;background:var(--accent)}
+tr.profit .cell.pos{color:var(--positive)}
+tr.profit.big td,tr.profit.big th.cat{background:linear-gradient(180deg,#e7f6ee,#d8efe2);border-top:1.5px solid #b9e0c9}
+tr.profit.big th.cat{color:#0f6f48}
+tr.profit.big .cell{color:#0f6f48;font-size:15px}
+tr.profit.big th.cat::before{background:var(--positive)}
 
 /* editable cell states */
-.cell.edit{cursor:pointer;position:relative;transition:background .12s}
-.cell.edit:hover{background:#eaf3fd;box-shadow:inset 0 0 0 1.5px #bcd9f6}
+.cell.edit{cursor:pointer;position:relative;transition:.12s}
+.cell.edit:hover{box-shadow:inset 0 0 0 2px #bcd9f6;border-radius:8px}
 .cell.st-avg{color:var(--text-muted)}
-.cell.st-avg::after{content:"";position:absolute;inset-inline:10px;bottom:5px;border-bottom:1px dashed var(--border-strong)}
-.cell.st-edit{background:var(--accent-soft)}
-.cell.st-target-income{background:var(--positive-soft)}
-.cell.st-target-expense{background:var(--warn-soft)}
-.tagi{display:inline-flex;align-items:center;gap:4px;justify-content:center}
-.badge{font-size:10px;font-weight:800;border-radius:999px;padding:1px 6px;line-height:1.4}
-.badge.t-in{background:#d7f0e2;color:var(--target-income)}
-.badge.t-ex{background:#f6e6c4;color:var(--target-expense)}
-.pencil{color:var(--accent);font-size:11px}
+.cell.st-avg .v{border-bottom:1.5px dotted var(--border-strong);padding-bottom:1px}
+.cell.st-edit{background:linear-gradient(180deg,#f0f7fe,#eaf3fd)}
+.chipv{display:inline-flex;align-items:center;gap:5px;justify-content:center;padding:3px 9px;border-radius:999px;font-weight:800;line-height:1.5}
+.cell.st-edit .chipv{background:#dcebfb;color:#1668c4}
+.cell.st-target-income .chipv{background:linear-gradient(135deg,#d8f2e4,#c3ecd4);color:#0f7a50;box-shadow:inset 0 0 0 1px #aee0c2}
+.cell.st-target-expense .chipv{background:linear-gradient(135deg,#fbeecb,#f6e2ad);color:#9a6604;box-shadow:inset 0 0 0 1px #edd398}
+.chipv .ar{font-size:11px;font-weight:900}
 
 /* current month dual */
-.dual{display:flex;flex-direction:column;gap:4px;align-items:center}
-.prog{width:74px;height:5px;border-radius:999px;background:#e7edf4;overflow:hidden}
-.prog>span{display:block;height:100%;border-radius:999px}
-.prog .fin{background:var(--positive)} .prog .fex{background:var(--warn)} .prog .fover{background:var(--negative)}
-.pct{font-size:10.5px;color:var(--text-soft);font-weight:600}
+.dual{display:flex;flex-direction:column;gap:5px;align-items:center}
+.dual .av{font-weight:700}
+.prog{width:78px;height:6px;border-radius:999px;background:#e6edf6;overflow:hidden}
+.prog>span{display:block;height:100%;border-radius:999px;transition:width .25s}
+.prog .fin{background:linear-gradient(90deg,#13895b,#2bb87f)} .prog .fex{background:linear-gradient(90deg,#e0a52a,#c98404)} .prog .fover{background:linear-gradient(90deg,#e8645a,#dc4436)}
+.stat{font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:999px}
+.stat.ok{background:var(--positive-soft);color:#0f7a50}
+.stat.neu{background:#eef2f8;color:#64748b}
+.stat.warnc{background:var(--warn-soft);color:#9a6604}
+.stat.bad{background:var(--negative-soft);color:#b5362a}
 
-/* Editor popover */
-.backdrop{position:fixed;inset:0;background:transparent;z-index:40}
-.editor{position:absolute;z-index:50;width:262px;background:var(--surface);border:1px solid var(--border-strong);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);padding:14px;animation:pop .12s ease}
-@keyframes pop{from{opacity:0;transform:translateY(-4px) scale(.98)}to{opacity:1;transform:none}}
-.editor h4{margin:0 0 2px;font-size:13.5px;font-weight:800}
-.editor .who{font-size:11.5px;color:var(--text-soft);margin-bottom:10px}
-.editor label.fld{display:block;font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:5px}
-.editor input[type=number]{width:100%;font-family:inherit;font-size:16px;font-weight:700;padding:9px 11px;border:1px solid var(--border-strong);border-radius:8px;text-align:start;color:var(--text);outline:none}
+/* ---------- Editor popover ---------- */
+.backdrop{position:fixed;inset:0;background:rgba(20,35,60,.04);z-index:40}
+.editor{position:absolute;z-index:50;width:268px;background:#fff;border:1px solid var(--border-strong);border-radius:var(--r-md);box-shadow:var(--shadow-lg);padding:16px;animation:pop .14s cubic-bezier(.2,.8,.2,1)}
+@keyframes pop{from{opacity:0;transform:translateY(-6px) scale(.97)}to{opacity:1;transform:none}}
+.editor h4{margin:0 0 2px;font-size:14px;font-weight:900}
+.editor .who{font-size:11.5px;color:var(--text-soft);margin-bottom:12px}
+.editor label.fld{display:block;font-size:11.5px;color:var(--text-muted);font-weight:700;margin-bottom:6px}
+.editor input[type=number]{width:100%;font-family:inherit;font-size:17px;font-weight:800;padding:10px 12px;border:1px solid var(--border-strong);border-radius:10px;text-align:start;color:var(--text);outline:none}
 .editor input[type=number]:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-.avgnote{font-size:11px;color:var(--text-soft);margin:7px 1px 2px}
-.tgl{display:flex;align-items:center;gap:9px;margin-top:12px;padding:10px;border:1px solid var(--border);border-radius:9px;background:var(--surface-alt);cursor:pointer;user-select:none}
+.avgnote{font-size:11px;color:var(--text-soft);margin:8px 1px 2px}
+.tgl{display:flex;align-items:center;gap:10px;margin-top:13px;padding:11px;border:1px solid var(--border);border-radius:11px;background:var(--surface-alt);cursor:pointer;user-select:none}
 .tgl input{width:0;height:0;opacity:0;position:absolute}
-.switch{width:38px;height:22px;border-radius:999px;background:#cdd8e6;position:relative;transition:.15s;flex:0 0 auto}
-.switch::after{content:"";position:absolute;top:2px;inset-inline-start:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:var(--shadow-sm);transition:.15s}
+.switch{width:40px;height:23px;border-radius:999px;background:#cdd8e6;position:relative;transition:.16s;flex:0 0 auto}
+.switch::after{content:"";position:absolute;top:2px;inset-inline-start:2px;width:19px;height:19px;border-radius:50%;background:#fff;box-shadow:var(--shadow-xs);transition:.16s}
 .tgl input:checked + .switch{background:var(--positive)}
-.tgl input:checked + .switch::after{transform:translateX(-16px)}
-.tgl .txt{font-size:12.5px;font-weight:700}
+.tgl input:checked + .switch::after{transform:translateX(-17px)}
+.tgl .txt{font-size:12.5px;font-weight:800}
 .tgl .txt small{display:block;font-weight:500;color:var(--text-soft);font-size:10.5px}
-.dirnote{font-size:11.5px;margin-top:9px;padding:7px 9px;border-radius:8px;display:none}
+.dirnote{font-size:11.5px;margin-top:10px;padding:8px 10px;border-radius:9px;display:none;font-weight:600}
 .dirnote.show{display:block}
-.dirnote.in{background:var(--positive-soft);color:#176b46}
+.dirnote.in{background:var(--positive-soft);color:#11704a}
 .dirnote.ex{background:var(--warn-soft);color:#8a5a04}
-.editor .acts{display:flex;gap:8px;margin-top:13px}
-.btn{flex:1;padding:9px;border-radius:8px;font-weight:700;font-size:12.5px;border:1px solid transparent}
-.btn-p{background:var(--accent);color:#fff}
-.btn-p:hover{background:#1769c8}
-.btn-g{background:transparent;color:var(--text-muted);border-color:var(--border-strong)}
+.editor .acts{display:flex;gap:8px;margin-top:14px}
+.btn{flex:1;padding:10px;border-radius:10px;font-weight:800;font-size:12.5px;border:1px solid transparent;transition:.12s}
+.btn-p{background:linear-gradient(135deg,#2a86ec,#1f7ae0);color:#fff;box-shadow:0 6px 14px rgba(31,122,224,.3)}
+.btn-p:hover{filter:brightness(1.05)}
+.btn-g{background:#fff;color:var(--text-muted);border-color:var(--border-strong)}
 .btn-g:hover{background:var(--surface-alt)}
-.btn-reset{background:transparent;color:var(--negative);border:none;font-size:11.5px;width:100%;margin-top:9px;text-align:center}
+.btn-reset{background:transparent;color:var(--negative);border:none;font-size:11.5px;width:100%;margin-top:10px;font-weight:700}
 .btn-reset:hover{text-decoration:underline}
-.foot{margin-top:22px;color:var(--text-soft);font-size:12px;text-align:center;line-height:1.7}
+
+.foot{margin-top:18px;color:var(--text-soft);font-size:12px;text-align:center;line-height:1.8}
 .foot b{color:var(--text-muted)}
 </style>
 </head>
 <body>
 <div class="app">
   <div class="page-head">
+    <div class="brand"><div class="dot">HK</div></div>
     <div>
-      <div class="brand">
-        <div class="dot">HK</div>
-        <h1>דו״ח תזרים חודשי עתידי · יעדים</h1>
-      </div>
-      <div class="sub">העמודה הראשונה היא <b>ממוצע 3 החודשים האחרונים</b> לכל קטגוריה — הבסיס לתחזית. ערכו כל תא בחודש נוכחי/עתידי כדי לקבוע יעד ללקוח; היתרות מתגלגלות קדימה ומראות איך ייראה התזרים אם יעמוד ביעדים.</div>
+      <h1>דו״ח תזרים חודשי עתידי · יעדים</h1>
+      <div class="sub">תחזית מבוססת <b>ממוצע 3 חודשים</b> אחרונים לכל קטגוריה. ערכו תא כדי לקבוע יעד ללקוח — היתרות מתגלגלות קדימה ומראות איך ייראה התזרים אם יעמוד ביעדים.</div>
     </div>
   </div>
 
   <div class="legend">
-    <div class="grp"><span class="swatch sw-avg">ממוצע</span> ממוצע 3 ח׳ · ללא התראות</div>
-    <div class="sep"></div>
-    <div class="grp"><span class="swatch sw-edit">ערך ✎</span> שונה ידנית · ללא יעד</div>
-    <div class="sep"></div>
-    <div class="grp"><span class="swatch sw-tin">↑ יעד</span> יעד הכנסה · לעבור מעל</div>
-    <div class="grp"><span class="swatch sw-tex">↓ יעד</span> יעד הוצאה · לא לעבור</div>
+    <span class="lchip"><span class="swatch sw-avg"></span> ממוצע 3 ח׳ · ללא התראות</span>
+    <span class="lchip"><span class="swatch sw-edit"></span> שונה ידנית · ללא יעד</span>
+    <span class="lchip"><span class="swatch sw-tin"></span> ↑ יעד הכנסה · לעבור מעל</span>
+    <span class="lchip"><span class="swatch sw-tex"></span> ↓ יעד הוצאה · לא לעבור</span>
   </div>
 
-  <div class="table-wrap">
-    <table id="report"></table>
+  <div class="card">
+    <div class="card-bar">
+      <div class="ttl"><span class="ic">📈</span> דו״ח תזרים חודשי</div>
+      <div class="toolbar">
+        <span class="pill"><span class="mut">טווח:</span> מרץ–ספטמבר 2026
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="pill">כל החשבונות
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <button class="iconbtn" title="ייצוא">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 3v9m0 0l-3.5-3.5M10 12l3.5-3.5M4 15.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="table-wrap"><table id="report"></table></div>
   </div>
 
   <div class="foot">
-    לחיצה על תא בחודש <b>נוכחי</b> או <b>עתידי</b> פותחת עורך · סימון «פתח יעד ללקוח» הופך אותו ליעד עם מעקב והתראות.<br>
-    עמודת הממוצע היא הבסיס הקבוע; כל ערך שלא נערך מתחיל ממנה · <b>מסגרת אשראי: 150,000 ₪</b> — אדום ביתרה מופיע רק בחריגה ממנה.
+    לחיצה על תא בחודש <b>נוכחי</b> או <b>עתידי</b> פותחת עורך · «פתח יעד ללקוח» הופך אותו ליעד עם מעקב והתראות.<br>
+    עמודת הממוצע היא הבסיס הקבוע · <b>מסגרת אשראי: 150,000 ₪</b> — אדום ביתרה מופיע רק בחריגה ממנה.
   </div>
 </div>
 
@@ -163,8 +213,7 @@ tr.data:hover td{background:#f6f9fd}
 /* ============================ DATA ============================ */
 const nf = new Intl.NumberFormat("he-IL",{maximumFractionDigits:0});
 function fmt(v){ if(v==null||isNaN(v)) return "—"; const a=nf.format(Math.abs(Math.round(v))); return v<0?`-${a}`:a; }
-const FRAME = 150000; // מסגרת אשראי — אדום רק בחריגה ממנה
-/* colorMode: "balance" -> אדום רק בחריגה ממסגרת | "flow" -> ירוק כשחיובי, אחרת ניטרלי */
+const FRAME = 150000;
 function cellColor(v, mode){
   if(v==null||!mode) return "";
   if(mode==="balance") return v < -FRAME ? "neg" : "";
@@ -172,7 +221,6 @@ function cellColor(v, mode){
   return "";
 }
 
-/* displayed columns: a single 3-month-average baseline, then current + future months */
 const COLS = [
   {type:"avg",   label:"ממוצע 3 ח׳", sub:"מרץ–מאי 2026"},
   {type:"month", key:"2026-06", label:"יוני 2026",    status:"current"},
@@ -180,9 +228,8 @@ const COLS = [
   {type:"month", key:"2026-08", label:"אוגוסט 2026",  status:"future"},
   {type:"month", key:"2026-09", label:"ספטמבר 2026",  status:"future"},
 ];
-const SEED_OPEN = -77698; // יתרת פתיחה בנק נוכחית (היום)
+const SEED_OPEN = -77698;
 
-/* a = שלושת החודשים האחרונים (לחישוב הממוצע); cur = בפועל בחודש הנוכחי */
 const INCOME = [
   {id:"cash",     label:"הכנסות ממכירות - מזומן",  a:[82000,85950,101900], cur:60000},
   {id:"clearing", label:"הכנסות ממכירות - סליקה",  a:[70000,76830, 84200], cur:48000},
@@ -190,23 +237,29 @@ const INCOME = [
   {id:"electra",  label:"הכנסות ממכירות - אלקטרה", a:[90000,87980, 63769], cur:40000},
   {id:"shipping", label:"הכנסות - חברות שילוח",    a:[29000,30698, 28960], cur:18000},
 ];
+/* group: cogs = עלות המכר | opex = הוצאות תפעוליות | fin = מימון ומס */
 const EXPENSE = [
-  {id:"suppliers",label:"עלות המכר - ספקים",  a:[150000,160000,155000], cur:90000},
-  {id:"salary",   label:"שכר עבודה",          a:[ 95000, 98000, 99000], cur:95000},
-  {id:"rent",     label:"שכירות",             a:[ 22000, 22000, 22000], cur:22000},
-  {id:"opex",     label:"הוצאות תפעול",       a:[ 18000, 19500, 17800], cur: 9000},
-  {id:"tax",      label:"מוסדות מס",          a:[ 30000, 32165, 10371], cur: 6000},
+  {id:"suppliers",label:"ספקים / חומר גלם",   a:[150000,160000,155000], cur:90000, group:"cogs"},
+  {id:"subcon",   label:"קבלני משנה",          a:[ 28000, 31000, 26000], cur:14000, group:"cogs"},
+  {id:"salary",   label:"שכר עבודה",          a:[ 95000, 98000, 99000], cur:95000, group:"opex"},
+  {id:"rent",     label:"שכירות",             a:[ 22000, 22000, 22000], cur:22000, group:"opex"},
+  {id:"opex",     label:"הוצאות תפעול",       a:[ 18000, 19500, 17800], cur: 9000, group:"opex"},
+  {id:"finance",  label:"מימון ועמלות בנק",    a:[  9000,  9500,  8800], cur: 4500, group:"fin"},
+  {id:"tax",      label:"מוסדות מס",          a:[ 30000, 32165, 10371], cur: 6000, group:"fin"},
 ];
+const GROUPS = {
+  cogs: {label:"עלות המכר",          total:"סה״כ עלות המכר"},
+  opex: {label:"הוצאות תפעוליות",     total:"סה״כ הוצאות תפעוליות"},
+  fin:  {label:"הוצאות מימון ומס",    total:"סה״כ מימון ומס"},
+};
 const LINES = {}; [...INCOME,...EXPENSE].forEach(l=>LINES[l.id]=l);
 const isIncome = id => !!INCOME.find(l=>l.id===id);
 const baseAvg = id => Math.round(LINES[id].a.reduce((s,n)=>s+n,0)/LINES[id].a.length);
 const curActual = id => LINES[id].cur;
 
-/* overrides: key `${lineId}|${monthKey}` -> {value, isTarget} */
 const overrides = {};
 const okey=(id,mk)=>id+"|"+mk;
 
-/* effective value of a line for a column */
 function colEffective(id, ci){
   const c=COLS[ci];
   if(c.type==="avg") return baseAvg(id);
@@ -218,8 +271,6 @@ function cellState(id, mk){
   if(!ov) return "avg";
   return ov.isTarget?"target":"edit";
 }
-
-/* per-column aggregates (forecast/target track) */
 function colTotals(ci){
   let inc=0,exp=0;
   INCOME.forEach(l=>inc+=colEffective(l.id,ci));
@@ -232,7 +283,19 @@ function curActualTotals(){
   EXPENSE.forEach(l=>exp+=curActual(l.id));
   return {inc,exp,net:inc-exp};
 }
-/* rolling balances along the real-month track (avg column has none) */
+
+/* ---- profit tiers (forecast track) ---- */
+function totIncome(ci){ let s=0; INCOME.forEach(l=>s+=colEffective(l.id,ci)); return s; }
+function gTot(ci,g){ let s=0; EXPENSE.forEach(l=>{ if(l.group===g) s+=colEffective(l.id,ci); }); return s; }
+function grossProfit(ci){ return totIncome(ci)-gTot(ci,"cogs"); }
+function operatingProfit(ci){ return grossProfit(ci)-gTot(ci,"opex"); }
+function cashflowProfit(ci){ return operatingProfit(ci)-gTot(ci,"fin"); } // == net
+/* ---- current-actual track ---- */
+function curIncome(){ let s=0; INCOME.forEach(l=>s+=curActual(l.id)); return s; }
+function cgTot(g){ let s=0; EXPENSE.forEach(l=>{ if(l.group===g) s+=curActual(l.id); }); return s; }
+function curGross(){ return curIncome()-cgTot("cogs"); }
+function curOperating(){ return curGross()-cgTot("opex"); }
+function curCashflow(){ return curOperating()-cgTot("fin"); }
 function balances(){
   const open={},close={}; let prev=null;
   COLS.forEach((c,ci)=>{
@@ -251,12 +314,12 @@ function headHTML(){
   let h1="",h2="";
   COLS.forEach(c=>{
     if(c.type==="avg"){
-      h1+=`<th class="mhead avgcol" rowspan="2">${c.label}<span class="tag tag-actual">${c.sub}</span></th>`;
+      h1+=`<th class="avgcol" rowspan="2"><span class="mname">${c.label}</span><span class="tag tag-actual">${c.sub}</span></th>`;
     }else if(c.status==="current"){
-      h1+=`<th class="mhead current" colspan="2">${c.label}<span class="tag tag-current">נוכחי · יעד מול בפועל</span></th>`;
-      h2+=`<th class="shead">יעד</th><th class="shead">בפועל</th>`;
+      h1+=`<th class="cur-h" colspan="2"><span class="mname">${c.label}</span><span class="tag tag-current">נוכחי · יעד מול בפועל</span></th>`;
+      h2+=`<th class="shead s-tgt">יעד</th><th class="shead">בפועל</th>`;
     }else{
-      h1+=`<th class="mhead" rowspan="2">${c.label}<span class="tag tag-future">תחזית · יעד</span></th>`;
+      h1+=`<th rowspan="2"><span class="mname">${c.label}</span><span class="tag tag-future">תחזית · יעד</span></th>`;
     }
   });
   return `<tr><th class="cat" rowspan="2">קטגוריה</th>${h1}</tr><tr>${h2}</tr>`;
@@ -264,75 +327,90 @@ function headHTML(){
 
 function lineCellCol(id,ci){
   const c=COLS[ci];
-  if(c.type==="avg") return `<td class="cell avgc">${fmt(baseAvg(id))}</td>`;
+  if(c.type==="avg") return `<td class="cell avgc"><span class="v">${fmt(baseAvg(id))}</span></td>`;
   const v=colEffective(id,ci);
   const st=cellState(id,c.key);
   const inc=isIncome(id);
-  let cls="cell edit", inner=fmt(v);
-  if(st==="avg") cls+=" st-avg";
-  else if(st==="edit"){ cls+=" st-edit"; inner=`<span class="tagi"><span class="pencil">✎</span>${fmt(v)}</span>`; }
+  const band = c.status==="current" ? " curband s-tgt" : "";
+  let cls="cell edit"+band, inner;
+  if(st==="avg"){ cls+=" st-avg"; inner=`<span class="v">${fmt(v)}</span>`; }
+  else if(st==="edit"){ cls+=" st-edit"; inner=`<span class="chipv">✎ ${fmt(v)}</span>`; }
   else { cls+= inc?" st-target-income":" st-target-expense";
-    const b=inc?`<span class="badge t-in">↑</span>`:`<span class="badge t-ex">↓</span>`;
-    inner=`<span class="tagi">${b}${fmt(v)}</span>`; }
+    const ar=inc?`<span class="ar">↑</span>`:`<span class="ar">↓</span>`;
+    inner=`<span class="chipv">${ar}${fmt(v)}</span>`; }
   let out=`<td class="${cls}" data-id="${id}" data-mk="${c.key}">${inner}</td>`;
   if(c.status==="current"){
-    const act=curActual(id), pct=v?Math.round(act/v*100):0;
-    const fill=inc?"fin":(pct>100?"fover":"fex"), w=Math.min(100,pct);
-    out+=`<td class="cell"><div class="dual"><span>${fmt(act)}</span>
-      <span class="prog"><span class="${fill}" style="width:${w}%"></span></span>
-      <span class="pct">${pct}% מהיעד</span></div></td>`;
+    const act=curActual(id), pct=v?Math.round(act/v*100):0, w=Math.min(100,pct);
+    let fill, stat;
+    if(inc){ fill="fin"; stat = pct>=100?`<span class="stat ok">✓ ${pct}%</span>`:`<span class="stat neu">${pct}% מהיעד</span>`; }
+    else   { fill= pct>100?"fover":"fex"; stat = pct>100?`<span class="stat bad">⚠ ${pct}%</span>`:`<span class="stat warnc">${pct}% מהתקציב</span>`; }
+    out+=`<td class="cell curband"><div class="dual"><span class="av">${fmt(act)}</span>
+      <span class="prog"><span class="${fill}" style="width:${w}%"></span></span>${stat}</div></td>`;
   }
   return out;
 }
 
-/* computed rows: valFn(ci)->number|null ; actFn(ci)->number|null (current actual sub-cell) */
 function compRow(label,cls,valFn,actFn,colorMode){
   let cells="";
   COLS.forEach((c,ci)=>{
     const v=valFn(ci);
-    const base=`cell ${c.type==="avg"?"avgc ":""}${cellColor(v,colorMode)} ${v==null?"empty":""}`;
-    cells+=`<td class="${base}">${v==null?"—":fmt(v)}</td>`;
+    const band = c.status==="current" ? " curband s-tgt" : (c.type==="avg"?" avgc":"");
+    cells+=`<td class="cell${band} ${cellColor(v,colorMode)} ${v==null?"empty":""}">${v==null?"—":fmt(v)}</td>`;
     if(c.status==="current"){
       const a=actFn(ci);
-      cells+=`<td class="cell ${cellColor(a,colorMode)} ${a==null?"empty":""}">${a==null?"—":fmt(a)}</td>`;
+      cells+=`<td class="cell curband ${cellColor(a,colorMode)} ${a==null?"empty":""}">${a==null?"—":fmt(a)}</td>`;
     }
   });
   return `<tr class="${cls}"><th class="cat">${label}</th>${cells}</tr>`;
 }
-
 function dataRow(l){
-  let cells="";
-  COLS.forEach((c,ci)=> cells+=lineCellCol(l.id,ci));
+  let cells=""; COLS.forEach((c,ci)=> cells+=lineCellCol(l.id,ci));
   return `<tr class="data"><th class="cat">${l.label}</th>${cells}</tr>`;
 }
-function sectionRow(label){
+function sectionRow(label,exp){
   const span=COLS.reduce((s,c)=>s+(c.status==="current"?2:1),0);
-  return `<tr class="section"><th class="cat">${label}</th><td colspan="${span}"></td></tr>`;
+  return `<tr class="section${exp?" exp":""}"><th class="cat">${label}</th><td colspan="${span}"></td></tr>`;
 }
 
 function renderTable(){
   const b=balances();
   const curActNet=curActualTotals().net;
+  const openF=ci=>b.open[ci], openA=ci=>b.open[ci];
+  const closeF=ci=>b.close[ci], closeA=ci=>b.open[ci]==null?null:b.open[ci]+curActNet;
+  const netF=ci=>colTotals(ci).net, netA=()=>curActNet;
 
-  const openF = ci=>b.open[ci];
-  const openA = ci=>b.open[ci];                       // opening is the same anchor
-  const closeF= ci=>b.close[ci];
-  const closeA= ci=>b.open[ci]==null?null:b.open[ci]+curActNet;
-  const netF  = ci=>colTotals(ci).net;
-  const netA  = ()=>curActNet;
+  const cogs=EXPENSE.filter(l=>l.group==="cogs");
+  const opex=EXPENSE.filter(l=>l.group==="opex");
+  const fin =EXPENSE.filter(l=>l.group==="fin");
 
   let rows="";
+  // ----- top summary (bank balances) -----
   rows += compRow("יתרת פתיחה בנק", "summary", openF, openA, "balance");
   rows += compRow("יתרת סגירה בנק", "summary", closeF, closeA, "balance");
   rows += compRow("הפרש (תזרים נטו)", "summary net", netF, netA, "flow");
 
-  rows += sectionRow("הכנסות");
+  // ----- income -----
+  rows += sectionRow("הכנסות",false);
   INCOME.forEach(l=> rows+=dataRow(l));
-  rows += compRow("סה״כ הכנסות", "total income", ci=>colTotals(ci).inc, ()=>curActualTotals().inc, null);
+  rows += compRow("סה״כ הכנסות", "total income", ci=>totIncome(ci), ()=>curIncome(), null);
 
-  rows += sectionRow("הוצאות");
-  EXPENSE.forEach(l=> rows+=dataRow(l));
-  rows += compRow("סה״כ הוצאות", "total expense", ci=>colTotals(ci).exp, ()=>curActualTotals().exp, null);
+  // ----- cost of sales -> gross profit -----
+  rows += sectionRow(GROUPS.cogs.label,true);
+  cogs.forEach(l=> rows+=dataRow(l));
+  rows += compRow(GROUPS.cogs.total, "total expense", ci=>gTot(ci,"cogs"), ()=>cgTot("cogs"), null);
+  rows += compRow("רווח גולמי", "profit", ci=>grossProfit(ci), ()=>curGross(), "flow");
+
+  // ----- operating expenses -> operating profit -----
+  rows += sectionRow(GROUPS.opex.label,true);
+  opex.forEach(l=> rows+=dataRow(l));
+  rows += compRow(GROUPS.opex.total, "total expense", ci=>gTot(ci,"opex"), ()=>cgTot("opex"), null);
+  rows += compRow("רווח תפעולי", "profit", ci=>operatingProfit(ci), ()=>curOperating(), "flow");
+
+  // ----- finance & tax -> cashflow profit -----
+  rows += sectionRow(GROUPS.fin.label,true);
+  fin.forEach(l=> rows+=dataRow(l));
+  rows += compRow(GROUPS.fin.total, "total expense", ci=>gTot(ci,"fin"), ()=>cgTot("fin"), null);
+  rows += compRow("רווח תזרימי", "profit big", ci=>cashflowProfit(ci), ()=>curCashflow(), "flow");
 
   document.getElementById("report").innerHTML = `<thead>${headHTML()}</thead><tbody>${rows}</tbody>`;
   document.querySelectorAll("td.cell.edit").forEach(td=> td.addEventListener("click",()=>openEditor(td)));
@@ -377,8 +455,8 @@ function openEditor(td){
 
   const r=td.getBoundingClientRect();
   let top=r.bottom+window.scrollY+6;
-  let left=r.left+window.scrollX+(r.width/2)-131;
-  left=Math.max(10,Math.min(left,window.scrollX+window.innerWidth-272));
+  let left=r.left+window.scrollX+(r.width/2)-134;
+  left=Math.max(10,Math.min(left,window.scrollX+window.innerWidth-278));
   ed.style.top=top+"px"; ed.style.left=left+"px";
   editorEl=ed;
 
