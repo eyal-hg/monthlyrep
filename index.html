@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>דו״ח תזרים חודשי עתידי · יעדים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f4f7fb; --surface:#ffffff; --surface-alt:#f9fbfd;
+  --border:#e3eaf2; --border-strong:#cdd8e6;
+  --text:#1c2a3a; --text-muted:#6b7a90; --text-soft:#9aa7bb;
+  --accent:#1f7ae0; --accent-soft:#e8f1fc;
+  --positive:#1f8a5a; --positive-soft:#e6f6ee;
+  --negative:#d6453c; --negative-soft:#fdeceb;
+  --warn:#c98404; --warn-soft:#fdf3e2;
+  --target-income:#1f8a5a; --target-expense:#c98404;
+  --shadow-sm:0 1px 2px rgba(15,35,65,.04);
+  --shadow-md:0 8px 24px rgba(15,35,65,.08);
+  --shadow-lg:0 18px 48px rgba(15,35,65,.16);
+  --radius-sm:6px; --radius-md:10px; --radius-lg:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:"Heebo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.4}
+button{font-family:inherit;cursor:pointer}
+.app{max-width:1180px;margin:0 auto;padding:28px 24px 80px}
+
+/* Header */
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.page-head h1{font-size:23px;font-weight:800;margin:0;letter-spacing:-.3px}
+.page-head .sub{color:var(--text-muted);font-size:13.5px;margin-top:6px;max-width:680px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand .dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#1f7ae0,#0ea5a5);box-shadow:var(--shadow-sm);display:grid;place-items:center;color:#fff;font-weight:800;font-size:15px}
+
+/* Legend */
+.legend{display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 16px;margin-bottom:14px;box-shadow:var(--shadow-sm)}
+.legend .grp{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-muted)}
+.legend .swatch{width:34px;height:20px;border-radius:6px;display:grid;place-items:center;font-size:11px;font-weight:700}
+.sw-avg{background:var(--surface-alt);border:1px dashed var(--border-strong);color:var(--text-soft)}
+.sw-edit{background:var(--accent-soft);border:1px solid #bcd9f6;color:var(--accent)}
+.sw-tin{background:var(--positive-soft);border:1px solid #b9e6cd;color:var(--target-income)}
+.sw-tex{background:var(--warn-soft);border:1px solid #f0d9a6;color:var(--target-expense)}
+.legend .sep{width:1px;height:22px;background:var(--border)}
+
+/* Table */
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);overflow:auto}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:820px}
+thead th{position:sticky;top:0;z-index:5;background:var(--surface);font-weight:700;font-size:12.5px;color:var(--text-muted);padding:10px 12px;text-align:center;border-bottom:1px solid var(--border);white-space:nowrap}
+thead th.cat{inset-inline-end:0;z-index:7;text-align:start;min-width:220px;background:var(--surface)}
+thead .tag{display:block;font-size:10.5px;font-weight:600;margin-top:3px}
+.tag-actual{color:var(--text-soft)} .tag-current{color:var(--accent)} .tag-future{color:var(--positive)}
+th.mhead.current,th.shead{background:var(--accent-soft);color:#155bb0}
+th.mhead.avgcol{background:#eef3f9;color:#33486a}
+th.shead{font-size:11.5px;border-bottom:1px solid var(--border)}
+
+td,tbody th{padding:0;border-bottom:1px solid var(--border)}
+tbody th.cat{position:sticky;inset-inline-end:0;z-index:3;background:var(--surface);text-align:start;font-weight:600;font-size:13px;padding:10px 14px;color:var(--text);min-width:220px;border-inline-start:1px solid var(--border)}
+.cell{padding:8px 12px;text-align:center;font-variant-numeric:tabular-nums;font-weight:500;color:var(--text);white-space:nowrap}
+.cell.empty{color:var(--text-soft)}
+.neg{color:var(--negative)} .pos{color:var(--positive)}
+.avgc{background:#f6f9fc}
+
+/* row kinds */
+tr.section th.cat{background:#eef3f9;color:#33486a;font-weight:800;font-size:11.5px;letter-spacing:.4px}
+tr.section td{background:#eef3f9}
+tr.summary th.cat,tr.summary .cell{font-weight:800}
+tr.summary td,tr.summary th.cat{background:var(--surface-alt)}
+tr.total th.cat,tr.total .cell{font-weight:800}
+tr.total.income td,tr.total.income th.cat{background:var(--positive-soft)}
+tr.total.expense td,tr.total.expense th.cat{background:var(--negative-soft)}
+tr.summary.net td,tr.summary.net th.cat{background:var(--accent-soft)}
+tr.data:hover td{background:#f6f9fd}
+
+/* editable cell states */
+.cell.edit{cursor:pointer;position:relative;transition:background .12s}
+.cell.edit:hover{background:#eaf3fd;box-shadow:inset 0 0 0 1.5px #bcd9f6}
+.cell.st-avg{color:var(--text-muted)}
+.cell.st-avg::after{content:"";position:absolute;inset-inline:10px;bottom:5px;border-bottom:1px dashed var(--border-strong)}
+.cell.st-edit{background:var(--accent-soft)}
+.cell.st-target-income{background:var(--positive-soft)}
+.cell.st-target-expense{background:var(--warn-soft)}
+.tagi{display:inline-flex;align-items:center;gap:4px;justify-content:center}
+.badge{font-size:10px;font-weight:800;border-radius:999px;padding:1px 6px;line-height:1.4}
+.badge.t-in{background:#d7f0e2;color:var(--target-income)}
+.badge.t-ex{background:#f6e6c4;color:var(--target-expense)}
+.pencil{color:var(--accent);font-size:11px}
+
+/* current month dual */
+.dual{display:flex;flex-direction:column;gap:4px;align-items:center}
+.prog{width:74px;height:5px;border-radius:999px;background:#e7edf4;overflow:hidden}
+.prog>span{display:block;height:100%;border-radius:999px}
+.prog .fin{background:var(--positive)} .prog .fex{background:var(--warn)} .prog .fover{background:var(--negative)}
+.pct{font-size:10.5px;color:var(--text-soft);font-weight:600}
+
+/* Editor popover */
+.backdrop{position:fixed;inset:0;background:transparent;z-index:40}
+.editor{position:absolute;z-index:50;width:262px;background:var(--surface);border:1px solid var(--border-strong);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);padding:14px;animation:pop .12s ease}
+@keyframes pop{from{opacity:0;transform:translateY(-4px) scale(.98)}to{opacity:1;transform:none}}
+.editor h4{margin:0 0 2px;font-size:13.5px;font-weight:800}
+.editor .who{font-size:11.5px;color:var(--text-soft);margin-bottom:10px}
+.editor label.fld{display:block;font-size:11.5px;color:var(--text-muted);font-weight:600;margin-bottom:5px}
+.editor input[type=number]{width:100%;font-family:inherit;font-size:16px;font-weight:700;padding:9px 11px;border:1px solid var(--border-strong);border-radius:8px;text-align:start;color:var(--text);outline:none}
+.editor input[type=number]:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.avgnote{font-size:11px;color:var(--text-soft);margin:7px 1px 2px}
+.tgl{display:flex;align-items:center;gap:9px;margin-top:12px;padding:10px;border:1px solid var(--border);border-radius:9px;background:var(--surface-alt);cursor:pointer;user-select:none}
+.tgl input{width:0;height:0;opacity:0;position:absolute}
+.switch{width:38px;height:22px;border-radius:999px;background:#cdd8e6;position:relative;transition:.15s;flex:0 0 auto}
+.switch::after{content:"";position:absolute;top:2px;inset-inline-start:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:var(--shadow-sm);transition:.15s}
+.tgl input:checked + .switch{background:var(--positive)}
+.tgl input:checked + .switch::after{transform:translateX(-16px)}
+.tgl .txt{font-size:12.5px;font-weight:700}
+.tgl .txt small{display:block;font-weight:500;color:var(--text-soft);font-size:10.5px}
+.dirnote{font-size:11.5px;margin-top:9px;padding:7px 9px;border-radius:8px;display:none}
+.dirnote.show{display:block}
+.dirnote.in{background:var(--positive-soft);color:#176b46}
+.dirnote.ex{background:var(--warn-soft);color:#8a5a04}
+.editor .acts{display:flex;gap:8px;margin-top:13px}
+.btn{flex:1;padding:9px;border-radius:8px;font-weight:700;font-size:12.5px;border:1px solid transparent}
+.btn-p{background:var(--accent);color:#fff}
+.btn-p:hover{background:#1769c8}
+.btn-g{background:transparent;color:var(--text-muted);border-color:var(--border-strong)}
+.btn-g:hover{background:var(--surface-alt)}
+.btn-reset{background:transparent;color:var(--negative);border:none;font-size:11.5px;width:100%;margin-top:9px;text-align:center}
+.btn-reset:hover{text-decoration:underline}
+.foot{margin-top:22px;color:var(--text-soft);font-size:12px;text-align:center;line-height:1.7}
+.foot b{color:var(--text-muted)}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="page-head">
+    <div>
+      <div class="brand">
+        <div class="dot">HK</div>
+        <h1>דו״ח תזרים חודשי עתידי · יעדים</h1>
+      </div>
+      <div class="sub">העמודה הראשונה היא <b>ממוצע 3 החודשים האחרונים</b> לכל קטגוריה — הבסיס לתחזית. ערכו כל תא בחודש נוכחי/עתידי כדי לקבוע יעד ללקוח; היתרות מתגלגלות קדימה ומראות איך ייראה התזרים אם יעמוד ביעדים.</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="grp"><span class="swatch sw-avg">ממוצע</span> ממוצע 3 ח׳ · ללא התראות</div>
+    <div class="sep"></div>
+    <div class="grp"><span class="swatch sw-edit">ערך ✎</span> שונה ידנית · ללא יעד</div>
+    <div class="sep"></div>
+    <div class="grp"><span class="swatch sw-tin">↑ יעד</span> יעד הכנסה · לעבור מעל</div>
+    <div class="grp"><span class="swatch sw-tex">↓ יעד</span> יעד הוצאה · לא לעבור</div>
+  </div>
+
+  <div class="table-wrap">
+    <table id="report"></table>
+  </div>
+
+  <div class="foot">
+    לחיצה על תא בחודש <b>נוכחי</b> או <b>עתידי</b> פותחת עורך · סימון «פתח יעד ללקוח» הופך אותו ליעד עם מעקב והתראות.<br>
+    עמודת הממוצע היא הבסיס הקבוע; כל ערך שלא נערך מתחיל ממנה · <b>מסגרת אשראי: 150,000 ₪</b> — אדום ביתרה מופיע רק בחריגה ממנה.
+  </div>
+</div>
+
+<script>
+/* ============================ DATA ============================ */
+const nf = new Intl.NumberFormat("he-IL",{maximumFractionDigits:0});
+function fmt(v){ if(v==null||isNaN(v)) return "—"; const a=nf.format(Math.abs(Math.round(v))); return v<0?`-${a}`:a; }
+const FRAME = 150000; // מסגרת אשראי — אדום רק בחריגה ממנה
+/* colorMode: "balance" -> אדום רק בחריגה ממסגרת | "flow" -> ירוק כשחיובי, אחרת ניטרלי */
+function cellColor(v, mode){
+  if(v==null||!mode) return "";
+  if(mode==="balance") return v < -FRAME ? "neg" : "";
+  if(mode==="flow")    return v > 0 ? "pos" : "";
+  return "";
+}
+
+/* displayed columns: a single 3-month-average baseline, then current + future months */
+const COLS = [
+  {type:"avg",   label:"ממוצע 3 ח׳", sub:"מרץ–מאי 2026"},
+  {type:"month", key:"2026-06", label:"יוני 2026",    status:"current"},
+  {type:"month", key:"2026-07", label:"יולי 2026",    status:"future"},
+  {type:"month", key:"2026-08", label:"אוגוסט 2026",  status:"future"},
+  {type:"month", key:"2026-09", label:"ספטמבר 2026",  status:"future"},
+];
+const SEED_OPEN = -77698; // יתרת פתיחה בנק נוכחית (היום)
+
+/* a = שלושת החודשים האחרונים (לחישוב הממוצע); cur = בפועל בחודש הנוכחי */
+const INCOME = [
+  {id:"cash",     label:"הכנסות ממכירות - מזומן",  a:[82000,85950,101900], cur:60000},
+  {id:"clearing", label:"הכנסות ממכירות - סליקה",  a:[70000,76830, 84200], cur:48000},
+  {id:"direct",   label:"הכנסות מסליקה - דיירקט",  a:[20000,22293, 28210], cur:15000},
+  {id:"electra",  label:"הכנסות ממכירות - אלקטרה", a:[90000,87980, 63769], cur:40000},
+  {id:"shipping", label:"הכנסות - חברות שילוח",    a:[29000,30698, 28960], cur:18000},
+];
+const EXPENSE = [
+  {id:"suppliers",label:"עלות המכר - ספקים",  a:[150000,160000,155000], cur:90000},
+  {id:"salary",   label:"שכר עבודה",          a:[ 95000, 98000, 99000], cur:95000},
+  {id:"rent",     label:"שכירות",             a:[ 22000, 22000, 22000], cur:22000},
+  {id:"opex",     label:"הוצאות תפעול",       a:[ 18000, 19500, 17800], cur: 9000},
+  {id:"tax",      label:"מוסדות מס",          a:[ 30000, 32165, 10371], cur: 6000},
+];
+const LINES = {}; [...INCOME,...EXPENSE].forEach(l=>LINES[l.id]=l);
+const isIncome = id => !!INCOME.find(l=>l.id===id);
+const baseAvg = id => Math.round(LINES[id].a.reduce((s,n)=>s+n,0)/LINES[id].a.length);
+const curActual = id => LINES[id].cur;
+
+/* overrides: key `${lineId}|${monthKey}` -> {value, isTarget} */
+const overrides = {};
+const okey=(id,mk)=>id+"|"+mk;
+
+/* effective value of a line for a column */
+function colEffective(id, ci){
+  const c=COLS[ci];
+  if(c.type==="avg") return baseAvg(id);
+  const ov=overrides[okey(id,c.key)];
+  return ov?ov.value:baseAvg(id);
+}
+function cellState(id, mk){
+  const ov=overrides[okey(id,mk)];
+  if(!ov) return "avg";
+  return ov.isTarget?"target":"edit";
+}
+
+/* per-column aggregates (forecast/target track) */
+function colTotals(ci){
+  let inc=0,exp=0;
+  INCOME.forEach(l=>inc+=colEffective(l.id,ci));
+  EXPENSE.forEach(l=>exp+=colEffective(l.id,ci));
+  return {inc,exp,net:inc-exp};
+}
+function curActualTotals(){
+  let inc=0,exp=0;
+  INCOME.forEach(l=>inc+=curActual(l.id));
+  EXPENSE.forEach(l=>exp+=curActual(l.id));
+  return {inc,exp,net:inc-exp};
+}
+/* rolling balances along the real-month track (avg column has none) */
+function balances(){
+  const open={},close={}; let prev=null;
+  COLS.forEach((c,ci)=>{
+    if(c.type!=="month"){ open[ci]=null; close[ci]=null; return; }
+    open[ci]= prev==null?SEED_OPEN:prev;
+    close[ci]= open[ci]+colTotals(ci).net;
+    prev=close[ci];
+  });
+  return {open,close};
+}
+
+/* ============================ RENDER ============================ */
+function render(){ renderTable(); }
+
+function headHTML(){
+  let h1="",h2="";
+  COLS.forEach(c=>{
+    if(c.type==="avg"){
+      h1+=`<th class="mhead avgcol" rowspan="2">${c.label}<span class="tag tag-actual">${c.sub}</span></th>`;
+    }else if(c.status==="current"){
+      h1+=`<th class="mhead current" colspan="2">${c.label}<span class="tag tag-current">נוכחי · יעד מול בפועל</span></th>`;
+      h2+=`<th class="shead">יעד</th><th class="shead">בפועל</th>`;
+    }else{
+      h1+=`<th class="mhead" rowspan="2">${c.label}<span class="tag tag-future">תחזית · יעד</span></th>`;
+    }
+  });
+  return `<tr><th class="cat" rowspan="2">קטגוריה</th>${h1}</tr><tr>${h2}</tr>`;
+}
+
+function lineCellCol(id,ci){
+  const c=COLS[ci];
+  if(c.type==="avg") return `<td class="cell avgc">${fmt(baseAvg(id))}</td>`;
+  const v=colEffective(id,ci);
+  const st=cellState(id,c.key);
+  const inc=isIncome(id);
+  let cls="cell edit", inner=fmt(v);
+  if(st==="avg") cls+=" st-avg";
+  else if(st==="edit"){ cls+=" st-edit"; inner=`<span class="tagi"><span class="pencil">✎</span>${fmt(v)}</span>`; }
+  else { cls+= inc?" st-target-income":" st-target-expense";
+    const b=inc?`<span class="badge t-in">↑</span>`:`<span class="badge t-ex">↓</span>`;
+    inner=`<span class="tagi">${b}${fmt(v)}</span>`; }
+  let out=`<td class="${cls}" data-id="${id}" data-mk="${c.key}">${inner}</td>`;
+  if(c.status==="current"){
+    const act=curActual(id), pct=v?Math.round(act/v*100):0;
+    const fill=inc?"fin":(pct>100?"fover":"fex"), w=Math.min(100,pct);
+    out+=`<td class="cell"><div class="dual"><span>${fmt(act)}</span>
+      <span class="prog"><span class="${fill}" style="width:${w}%"></span></span>
+      <span class="pct">${pct}% מהיעד</span></div></td>`;
+  }
+  return out;
+}
+
+/* computed rows: valFn(ci)->number|null ; actFn(ci)->number|null (current actual sub-cell) */
+function compRow(label,cls,valFn,actFn,colorMode){
+  let cells="";
+  COLS.forEach((c,ci)=>{
+    const v=valFn(ci);
+    const base=`cell ${c.type==="avg"?"avgc ":""}${cellColor(v,colorMode)} ${v==null?"empty":""}`;
+    cells+=`<td class="${base}">${v==null?"—":fmt(v)}</td>`;
+    if(c.status==="current"){
+      const a=actFn(ci);
+      cells+=`<td class="cell ${cellColor(a,colorMode)} ${a==null?"empty":""}">${a==null?"—":fmt(a)}</td>`;
+    }
+  });
+  return `<tr class="${cls}"><th class="cat">${label}</th>${cells}</tr>`;
+}
+
+function dataRow(l){
+  let cells="";
+  COLS.forEach((c,ci)=> cells+=lineCellCol(l.id,ci));
+  return `<tr class="data"><th class="cat">${l.label}</th>${cells}</tr>`;
+}
+function sectionRow(label){
+  const span=COLS.reduce((s,c)=>s+(c.status==="current"?2:1),0);
+  return `<tr class="section"><th class="cat">${label}</th><td colspan="${span}"></td></tr>`;
+}
+
+function renderTable(){
+  const b=balances();
+  const curActNet=curActualTotals().net;
+
+  const openF = ci=>b.open[ci];
+  const openA = ci=>b.open[ci];                       // opening is the same anchor
+  const closeF= ci=>b.close[ci];
+  const closeA= ci=>b.open[ci]==null?null:b.open[ci]+curActNet;
+  const netF  = ci=>colTotals(ci).net;
+  const netA  = ()=>curActNet;
+
+  let rows="";
+  rows += compRow("יתרת פתיחה בנק", "summary", openF, openA, "balance");
+  rows += compRow("יתרת סגירה בנק", "summary", closeF, closeA, "balance");
+  rows += compRow("הפרש (תזרים נטו)", "summary net", netF, netA, "flow");
+
+  rows += sectionRow("הכנסות");
+  INCOME.forEach(l=> rows+=dataRow(l));
+  rows += compRow("סה״כ הכנסות", "total income", ci=>colTotals(ci).inc, ()=>curActualTotals().inc, null);
+
+  rows += sectionRow("הוצאות");
+  EXPENSE.forEach(l=> rows+=dataRow(l));
+  rows += compRow("סה״כ הוצאות", "total expense", ci=>colTotals(ci).exp, ()=>curActualTotals().exp, null);
+
+  document.getElementById("report").innerHTML = `<thead>${headHTML()}</thead><tbody>${rows}</tbody>`;
+  document.querySelectorAll("td.cell.edit").forEach(td=> td.addEventListener("click",()=>openEditor(td)));
+}
+
+/* ============================ EDITOR ============================ */
+let editorEl=null, backdropEl=null;
+function closeEditor(){ if(editorEl){editorEl.remove();editorEl=null;} if(backdropEl){backdropEl.remove();backdropEl=null;} }
+
+function openEditor(td){
+  closeEditor();
+  const id=td.dataset.id, mk=td.dataset.mk;
+  const col=COLS.find(c=>c.key===mk);
+  const line=LINES[id], inc=isIncome(id);
+  const cur=colEffective(id, COLS.indexOf(col));
+  const avg=baseAvg(id);
+  const ov=overrides[okey(id,mk)];
+
+  backdropEl=document.createElement("div"); backdropEl.className="backdrop";
+  backdropEl.addEventListener("click",closeEditor); document.body.appendChild(backdropEl);
+
+  const ed=document.createElement("div"); ed.className="editor";
+  ed.innerHTML=`
+    <h4>${line.label}</h4>
+    <div class="who">${col.label} · ${inc?"קטגוריית הכנסה":"קטגוריית הוצאה"}</div>
+    <label class="fld">ערך לחודש (₪)</label>
+    <input type="number" id="ed-val" value="${cur}" />
+    <div class="avgnote">ממוצע 3 ח׳: <b>${fmt(avg)}</b></div>
+    <label class="tgl">
+      <input type="checkbox" id="ed-tgt" ${ov&&ov.isTarget?"checked":""}/>
+      <span class="switch"></span>
+      <span class="txt">פתח יעד ללקוח 🎯<small>מעקב והתראות על עמידה ביעד</small></span>
+    </label>
+    <div class="dirnote ${inc?"in":"ex"}" id="ed-dir">${inc?"יעד הכנסה — הלקוח צריך <b>לעבור</b> את הסכום ↑":"יעד הוצאה — הלקוח צריך <b>לא לעבור</b> את הסכום ↓"}</div>
+    <div class="acts">
+      <button class="btn btn-p" id="ed-save">שמירה</button>
+      <button class="btn btn-g" id="ed-cancel">ביטול</button>
+    </div>
+    ${ov?`<button class="btn-reset" id="ed-reset">↺ החזרה לממוצע (הסרת עריכה)</button>`:""}
+  `;
+  document.body.appendChild(ed);
+
+  const r=td.getBoundingClientRect();
+  let top=r.bottom+window.scrollY+6;
+  let left=r.left+window.scrollX+(r.width/2)-131;
+  left=Math.max(10,Math.min(left,window.scrollX+window.innerWidth-272));
+  ed.style.top=top+"px"; ed.style.left=left+"px";
+  editorEl=ed;
+
+  const tgt=ed.querySelector("#ed-tgt"), dir=ed.querySelector("#ed-dir");
+  const syncDir=()=>dir.classList.toggle("show",tgt.checked);
+  syncDir(); tgt.addEventListener("change",syncDir);
+  const valInput=ed.querySelector("#ed-val"); valInput.focus(); valInput.select();
+
+  ed.querySelector("#ed-save").addEventListener("click",()=>{
+    const v=Math.round(parseFloat(valInput.value));
+    if(isNaN(v)){ valInput.focus(); return; }
+    overrides[okey(id,mk)]={value:v,isTarget:tgt.checked};
+    closeEditor(); render();
+  });
+  ed.querySelector("#ed-cancel").addEventListener("click",closeEditor);
+  const rs=ed.querySelector("#ed-reset");
+  if(rs) rs.addEventListener("click",()=>{ delete overrides[okey(id,mk)]; closeEditor(); render(); });
+  valInput.addEventListener("keydown",e=>{ if(e.key==="Enter") ed.querySelector("#ed-save").click(); if(e.key==="Escape") closeEditor(); });
+}
+
+window.addEventListener("scroll",()=>{ if(editorEl) closeEditor(); }, true);
+render();
+</script>
+</body>
+</html>
