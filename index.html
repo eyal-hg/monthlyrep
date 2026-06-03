@@ -116,6 +116,20 @@ th.cat.lvl3{padding-inline-start:78px}
 /* שורת קטגוריה תפעולית (רמה 1) */
 tr.catrow th.cat,tr.catrow .cell{font-weight:700}
 tr.catrow:hover td,tr.catrow:hover th.cat{background:#f4f8fd}
+
+/* what-if: כפתור הסתרה + שורה מוסתרת */
+.excl{margin-inline-start:8px;width:20px;height:20px;border-radius:50%;border:1px solid var(--border-strong);
+  background:#fff;color:var(--text-soft);font-size:13px;line-height:1;padding:0;vertical-align:middle;display:none}
+tr.data:hover .excl{display:inline-flex;align-items:center;justify-content:center}
+.excl:hover{color:var(--negative);border-color:#f0b6b1;background:var(--negative-soft)}
+.excl.on{display:inline-flex;align-items:center;justify-content:center;color:var(--warn);border-color:#e8c98a;background:var(--warn-soft)}
+tr.excluded .lbl{text-decoration:line-through;color:var(--text-soft)}
+tr.excluded .cell .v,tr.excluded .cell .chipv{opacity:.4;text-decoration:line-through}
+tr.excluded td.cell{opacity:.55}
+.simbar{align-items:center;justify-content:space-between;gap:14px;padding:10px 18px;background:var(--warn-soft);
+  border-bottom:1px solid #f0d9a6;color:#8a5a04;font-size:12.5px;font-weight:600}
+.simreset{background:#fff;border:1px solid #e8c98a;color:#9a6604;border-radius:8px;padding:6px 12px;font-weight:700;font-size:12px}
+.simreset:hover{background:#fff7ea}
 .caret,.caret-sp{display:inline-block;width:15px;text-align:center;color:var(--text-soft);font-size:10px;vertical-align:1px;margin-inline-end:5px}
 .caret{cursor:pointer;border-radius:4px}
 .caret:hover{color:var(--accent);background:var(--accent-soft)}
@@ -221,6 +235,10 @@ tr.subline.open th.cat,tr.subline.open .cell{color:var(--warn);font-weight:700}
           <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 3v9m0 0l-3.5-3.5M10 12l3.5-3.5M4 15.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
+    </div>
+    <div id="simbar" class="simbar" style="display:none">
+      <span>🧪 מצב סימולציה — <b id="simcount">0</b> פריטים מוסתרים מהחישוב; היתרות והסכומים מציגים את התרחיש.</span>
+      <button id="simreset" class="simreset">↺ שחזר הכל</button>
     </div>
     <div class="table-wrap"><table id="report"></table></div>
   </div>
@@ -333,28 +351,33 @@ function cellState(id, mk){
   if(!ov) return "avg";
   return ov.isTarget?"target":"edit";
 }
+/* simulation: פריטים שמוסתרים מהחישוב (מה-אם). הערך עדיין מוצג, אך לא נספר */
+const excluded = new Set();
+const eff    = (id,ci)=> excluded.has(id) ? 0 : colEffective(id,ci);
+const curEff = (id)   => excluded.has(id) ? 0 : curActual(id);
+
 function colTotals(ci){
   let inc=0,exp=0;
-  INCOME.forEach(l=>inc+=colEffective(l.id,ci));
-  EXPENSE.forEach(l=>exp+=colEffective(l.id,ci));
+  INCOME.forEach(l=>inc+=eff(l.id,ci));
+  EXPENSE.forEach(l=>exp+=eff(l.id,ci));
   return {inc,exp,net:inc-exp};
 }
 function curActualTotals(){
   let inc=0,exp=0;
-  INCOME.forEach(l=>inc+=curActual(l.id));
-  EXPENSE.forEach(l=>exp+=curActual(l.id));
+  INCOME.forEach(l=>inc+=curEff(l.id));
+  EXPENSE.forEach(l=>exp+=curEff(l.id));
   return {inc,exp,net:inc-exp};
 }
 
 /* ---- profit tiers (forecast track) ---- */
-function totIncome(ci){ let s=0; INCOME.forEach(l=>s+=colEffective(l.id,ci)); return s; }
-function gTot(ci,g){ let s=0; EXPENSE.forEach(l=>{ if(l.group===g) s+=colEffective(l.id,ci); }); return s; }
+function totIncome(ci){ let s=0; INCOME.forEach(l=>s+=eff(l.id,ci)); return s; }
+function gTot(ci,g){ let s=0; EXPENSE.forEach(l=>{ if(l.group===g) s+=eff(l.id,ci); }); return s; }
 function grossProfit(ci){ return totIncome(ci)-gTot(ci,"cogs"); }
 function operatingProfit(ci){ return grossProfit(ci)-gTot(ci,"opex"); }
 function cashflowProfit(ci){ return operatingProfit(ci)-gTot(ci,"fin"); } // == net
 /* ---- current-actual track ---- */
-function curIncome(){ let s=0; INCOME.forEach(l=>s+=curActual(l.id)); return s; }
-function cgTot(g){ let s=0; EXPENSE.forEach(l=>{ if(l.group===g) s+=curActual(l.id); }); return s; }
+function curIncome(){ let s=0; INCOME.forEach(l=>s+=curEff(l.id)); return s; }
+function cgTot(g){ let s=0; EXPENSE.forEach(l=>{ if(l.group===g) s+=curEff(l.id); }); return s; }
 function curGross(){ return curIncome()-cgTot("cogs"); }
 function curOperating(){ return curGross()-cgTot("opex"); }
 function curCashflow(){ return curOperating()-cgTot("fin"); }
@@ -362,10 +385,10 @@ function curCashflow(){ return curOperating()-cgTot("fin"); }
 /* ---- drill-down helpers ---- */
 // קטגוריה תפעולית: סכום כל התיאורים שלה / לפי קבוע-משתנה
 const catItems = catId => OPEX_LINES.filter(l=>l.cat===catId);
-function catTot(ci,catId){ let s=0; catItems(catId).forEach(l=>s+=colEffective(l.id,ci)); return s; }
-function curCatTot(catId){ let s=0; catItems(catId).forEach(l=>s+=curActual(l.id)); return s; }
-function catSub(ci,catId,fixed){ let s=0; catItems(catId).forEach(l=>{ if(!!l.fixed===fixed) s+=colEffective(l.id,ci); }); return s; }
-function curCatSub(catId,fixed){ let s=0; catItems(catId).forEach(l=>{ if(!!l.fixed===fixed) s+=curActual(l.id); }); return s; }
+function catTot(ci,catId){ let s=0; catItems(catId).forEach(l=>s+=eff(l.id,ci)); return s; }
+function curCatTot(catId){ let s=0; catItems(catId).forEach(l=>s+=curEff(l.id)); return s; }
+function catSub(ci,catId,fixed){ let s=0; catItems(catId).forEach(l=>{ if(!!l.fixed===fixed) s+=eff(l.id,ci); }); return s; }
+function curCatSub(catId,fixed){ let s=0; catItems(catId).forEach(l=>{ if(!!l.fixed===fixed) s+=curEff(l.id); }); return s; }
 // עלות המכר: ידוע/מחויב מול נותר פתוח
 const knownVal = id => LINES[id].known||0;
 function openVal(id,ci){ return colEffective(id,ci)-knownVal(id); }
@@ -451,9 +474,11 @@ function compRow(label,cls,valFn,actFn,colorMode){
 function rowComputed(key,label,level,cls,valFn,actFn,colorMode,expandable){
   return `<tr class="${cls}"><th class="cat lvl${level}">${caret(key,expandable)}<span class="lbl">${label}</span></th>${valueCells(valFn,actFn,colorMode)}</tr>`;
 }
-// editable line, indented + optional caret
+// editable line, indented + optional caret + exclude (what-if) toggle
 function rowEdit(id,level,expandable,key){
-  return `<tr class="data"><th class="cat lvl${level}">${caret(key,expandable)}<span class="lbl">${LINES[id].label}</span></th>${editCells(id)}</tr>`;
+  const ex=excluded.has(id);
+  const btn=`<button class="excl${ex?" on":""}" data-id="${id}" title="${ex?"שחזר לחישוב":"הסתר מהחישוב (סימולציה)"}">${ex?"↺":"−"}</button>`;
+  return `<tr class="data${ex?" excluded":""}"><th class="cat lvl${level}">${caret(key,expandable)}<span class="lbl">${LINES[id].label}</span>${btn}</th>${editCells(id)}</tr>`;
 }
 function sectionRow(label,exp){
   const span=COLS.reduce((s,c)=>s+(c.status==="current"?2:1),0);
@@ -518,6 +543,19 @@ function renderTable(){
   document.getElementById("report").innerHTML = `<thead>${headHTML()}</thead><tbody>${rows}</tbody>`;
   document.querySelectorAll("td.cell.edit").forEach(td=> td.addEventListener("click",()=>openEditor(td)));
   document.querySelectorAll(".caret").forEach(el=> el.addEventListener("click",e=>{ e.stopPropagation(); toggle(el.dataset.key); }));
+  document.querySelectorAll(".excl").forEach(b=> b.addEventListener("click",e=>{
+    e.stopPropagation(); const id=b.dataset.id;
+    excluded.has(id)?excluded.delete(id):excluded.add(id); render();
+  }));
+  // simulation banner
+  const sim=document.getElementById("simbar");
+  if(sim){
+    if(excluded.size){
+      sim.style.display="flex";
+      sim.querySelector("#simcount").textContent=excluded.size;
+    }else sim.style.display="none";
+    sim.querySelector("#simreset").onclick=()=>{ excluded.clear(); render(); };
+  }
 }
 
 /* ============================ EDITOR ============================ */
