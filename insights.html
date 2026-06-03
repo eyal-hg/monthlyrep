@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>תובנות לקראת הדוח · דו״ח תזרים חודשי</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#eef2f8; --surface:#ffffff; --surface-alt:#f8fafc;
+  --border:#e6ecf4; --border-strong:#d3dced;
+  --text:#16243a; --text-muted:#64748b; --text-soft:#9aa7bb;
+  --accent:#1f7ae0; --accent-2:#0ea5a5; --accent-soft:#eaf3fd;
+  --positive:#13895b; --positive-soft:#e7f7ef;
+  --negative:#dc4436; --negative-soft:#fdeceb;
+  --warn:#c98404; --warn-soft:#fdf4e3;
+  --purple:#7a5cf0; --purple-soft:#efeafe;
+  --shadow-xs:0 1px 2px rgba(15,35,65,.05);
+  --shadow-sm:0 2px 8px rgba(15,35,65,.06);
+  --shadow-md:0 10px 30px rgba(15,35,65,.09);
+  --shadow-lg:0 28px 70px rgba(15,35,65,.16);
+  --r-md:12px; --r-lg:18px; --r-xl:24px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:"Heebo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:
+  radial-gradient(1200px 480px at 85% -10%, #e8f0fb 0%, rgba(238,242,248,0) 60%),
+  radial-gradient(900px 420px at 0% 0%, #e9f6f4 0%, rgba(238,242,248,0) 55%),
+  var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.65}
+button{font-family:inherit;cursor:pointer}
+a{color:inherit}
+
+.wrap{max-width:780px;margin:0 auto;padding:40px 22px 90px}
+.sheet{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);box-shadow:var(--shadow-lg);overflow:hidden}
+
+/* ---------- cover header ---------- */
+.cover{position:relative;padding:38px 44px 34px;background:
+  radial-gradient(600px 240px at 100% 0%, #eaf3fd 0%, rgba(255,255,255,0) 60%),
+  linear-gradient(180deg,#ffffff,#fbfdff)}
+.cover::after{content:"";position:absolute;inset-inline:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:26px}
+.brand{display:flex;align-items:center;gap:11px}
+.brand .dot{width:42px;height:42px;border-radius:13px;background:linear-gradient(140deg,#2a86ec,#0ea5a5);box-shadow:0 8px 18px rgba(20,120,200,.32);display:grid;place-items:center;color:#fff;font-weight:900;font-size:16px}
+.brand .nm{font-weight:900;font-size:15px;letter-spacing:.3px}
+.brand .nm small{display:block;font-weight:600;color:var(--text-soft);font-size:11px;letter-spacing:.5px}
+.meta{text-align:start;font-size:12px;color:var(--text-muted)}
+.meta b{color:var(--text)}
+
+.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:800;color:var(--accent);background:var(--accent-soft);padding:5px 12px;border-radius:999px;letter-spacing:.4px}
+h1.title{font-size:30px;font-weight:900;letter-spacing:-.6px;margin:14px 0 8px;line-height:1.2}
+.subt{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--text-muted);font-size:14px}
+.chip{display:inline-flex;align-items:center;gap:7px;background:var(--surface-alt);border:1px solid var(--border);border-radius:999px;padding:6px 13px;font-size:12.5px;font-weight:700;color:var(--text)}
+.chip .mut{color:var(--text-soft);font-weight:500}
+
+/* ---------- body ---------- */
+.body{padding:30px 44px 40px}
+.about{background:linear-gradient(180deg,#f7faff,#f2f7fd);border:1px solid var(--border);border-inline-start:4px solid var(--accent);border-radius:var(--r-md);padding:18px 20px;margin-bottom:34px}
+.about h3{margin:0 0 6px;font-size:15px;font-weight:900}
+.about p{margin:0;color:var(--text-muted);font-size:13.5px;line-height:1.7}
+
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.sec-head h2{font-size:20px;font-weight:900;margin:0;display:flex;align-items:center;gap:10px}
+.sec-head h2 .cnt{font-size:13px;color:var(--text-soft);font-weight:700}
+.ai-badge{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;color:var(--purple);background:var(--purple-soft);border:1px solid #ddd3fb;padding:6px 12px;border-radius:999px}
+.ai-badge .pulse{width:7px;height:7px;border-radius:50%;background:var(--purple);box-shadow:0 0 0 0 rgba(122,92,240,.6);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(122,92,240,.5)}70%{box-shadow:0 0 0 7px rgba(122,92,240,0)}100%{box-shadow:0 0 0 0 rgba(122,92,240,0)}}
+
+/* ---------- insight cards ---------- */
+.insight{display:flex;gap:16px;padding:20px;border:1px solid var(--border);border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow-xs);margin-bottom:14px;transition:.15s}
+.insight:hover{box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.num{flex:0 0 auto;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-weight:900;font-size:16px;color:#fff}
+.insight .c{flex:1;min-width:0}
+.insight .htop{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.insight h3{margin:0;font-size:16.5px;font-weight:800}
+.insight p{margin:0;color:#46566c;font-size:14px;line-height:1.72}
+.insight p b{color:var(--text)}
+.tagi{font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px}
+.t-risk{background:var(--negative-soft);color:#b5362a} .n-risk{background:linear-gradient(135deg,#f08a80,#dc4436)}
+.t-warn{background:var(--warn-soft);color:#9a6604} .n-warn{background:linear-gradient(135deg,#e6b14a,#c98404)}
+.t-opp{background:var(--positive-soft);color:#0f7a50} .n-opp{background:linear-gradient(135deg,#3cbd84,#13895b)}
+.t-info{background:var(--accent-soft);color:#1668c4} .n-info{background:linear-gradient(135deg,#4f9af0,#1f7ae0)}
+
+/* ---------- footer / CTA ---------- */
+.cta{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:30px;padding:22px;border-radius:var(--r-lg);background:linear-gradient(135deg,#143a66,#0e6f73);color:#fff;box-shadow:var(--shadow-md)}
+.cta .t{font-size:16px;font-weight:800}
+.cta .s{font-size:13px;opacity:.85;margin-top:3px}
+.cta a.btn{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#143a66;font-weight:800;font-size:14px;padding:12px 20px;border-radius:11px;text-decoration:none;box-shadow:0 8px 20px rgba(0,0,0,.18)}
+.cta a.btn:hover{transform:translateY(-1px)}
+
+.disclaimer{margin-top:22px;text-align:center;color:var(--text-soft);font-size:11.5px;line-height:1.7}
+
+.actions{display:flex;justify-content:center;gap:10px;margin-top:18px}
+.gbtn{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border-strong);border-radius:11px;padding:10px 16px;font-weight:700;font-size:13px;color:var(--text-muted);box-shadow:var(--shadow-xs)}
+.gbtn:hover{color:var(--accent);border-color:#bcd9f6;background:var(--accent-soft)}
+
+@page{ size:A4 portrait; margin:14mm; }
+@media print{
+  html,body{background:#fff}
+  .wrap{padding:0;max-width:none}
+  .sheet{box-shadow:none;border:none;border-radius:0}
+  .cover{padding:0 0 18px}
+  .body{padding:18px 0 0}
+  .actions,.cta a.btn{display:none}
+  .insight{break-inside:avoid;page-break-inside:avoid}
+  .cta{break-inside:avoid}
+}
+@media(max-width:620px){.cover,.body{padding-inline:22px}h1.title{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="sheet">
+    <!-- ===== COVER ===== -->
+    <div class="cover">
+      <div class="topline">
+        <div class="brand">
+          <div class="dot">HK</div>
+          <div class="nm">HK&nbsp;MONEY<small>ניהול פיננסי חכם</small></div>
+        </div>
+        <div class="meta">
+          הופק עבור: <b>כאמלה הסעדה בע״מ</b><br>
+          תאריך הפקה: <b>2 ביוני 2026</b> · ח.פ 70
+        </div>
+      </div>
+
+      <span class="eyebrow">✨ דף מקדים · תובנות לקראת הפגישה</span>
+      <h1 class="title">דו״ח תזרים חודשי · תחזית ויעדים</h1>
+      <div class="subt">
+        <span class="chip"><span class="mut">תקופת הדוח:</span> מרץ–ספטמבר 2026</span>
+        <span class="chip"><span class="mut">בסיס תחזית:</span> ממוצע 3 חודשים</span>
+        <span class="chip"><span class="mut">חשבונות:</span> כל החשבונות</span>
+      </div>
+    </div>
+
+    <!-- ===== BODY ===== -->
+    <div class="body">
+      <div class="about">
+        <h3>על הדוח 📄</h3>
+        <p>
+          הדוח המצורף מציג <b>תחזית תזרים קדימה</b> לחודשים הקרובים, כשכל קטגוריה מבוססת על <b>ממוצע שלושת החודשים האחרונים</b>.
+          בפגישה נהפוך חלק מהמספרים ל<b>יעדים</b> — סכומי הכנסה שכדאי לעבור, וסכומי הוצאה שכדאי לא לחרוג מהם —
+          ונראה יחד כיצד עמידה בהם משנה את יתרת הבנק לאורך הזמן. התובנות שלהלן הופקו אוטומטית מהנתונים שלך כדי למקד את השיחה.
+        </p>
+      </div>
+
+      <div class="sec-head">
+        <h2>5 תובנות מרכזיות <span class="cnt">· לקראת הפגישה</span></h2>
+        <span class="ai-badge"><span class="pulse"></span> מופק ע״י AI</span>
+      </div>
+
+      <div id="insights"></div>
+
+      <!-- CTA -->
+      <div class="cta">
+        <div>
+          <div class="t">מוכנים לצלול לדוח המלא?</div>
+          <div class="s">בדוח האינטראקטיבי תוכלו לקבוע יעדים ולראות את התזרים מתעדכן בזמן אמת.</div>
+        </div>
+        <a class="btn" href="index.html">פתח את הדוח המלא ←</a>
+      </div>
+
+      <div class="actions">
+        <button class="gbtn" onclick="window.print()">🖨️ הדפסה / שמירה כ‑PDF</button>
+        <button class="gbtn" id="regen">↻ הפק תובנות מחדש</button>
+      </div>
+
+      <div class="disclaimer">
+        התובנות מבוססות על נתוני התזרים שנמשכו ממערכת הנהלת החשבונות ונועדו לסיוע בקבלת החלטות בלבד; אינן מהוות ייעוץ פיננסי או מס.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* התובנות מעוגנות במספרי הדוח (ממוצע 3 ח׳). בהמשך יוחלפו בפלט AI חי מאותם נתונים. */
+const INSIGHTS = [
+  {
+    type:"risk", tag:"דורש תשומת לב", icon:"⚠",
+    title:"התזרים החודשי שלילי וצובר",
+    body:`לפי ממוצע שלושת החודשים האחרונים, התזרים החודשי נטו עומד על כ-<b>‎-54,000 ₪</b>.
+          יתרת הבנק נפתחת ב-<b>‎-77,700 ₪</b>, וללא שינוי היא צפויה <b>לחצות את מסגרת האשראי (150,000 ₪) בתוך כחודשיים</b>.
+          זו הנקודה הדחופה ביותר לפגישה.`
+  },
+  {
+    type:"warn", tag:"שורש הבעיה", icon:"🔎",
+    title:"ההוצאות התפעוליות שוחקות רווח גולמי בריא",
+    body:`הרווח הגולמי חיובי ויציב — כ-<b>117,000 ₪</b> בחודש (שיעור רווחיות ~39%).
+          אבל ההוצאות התפעוליות (~138,000 ₪) הופכות אותו ל<b>הפסד תפעולי של כ-20,000 ₪</b>.
+          המסקנה: הבעיה אינה בתמחור או ברווחיות הליבה, אלא ב<b>מבנה ההוצאות הקבועות</b>.`
+  },
+  {
+    type:"info", tag:"מגמה", icon:"📊",
+    title:"תמהיל ההכנסות בתנועה",
+    body:`ערוץ ה<b>מזומן צומח</b> (מ-82 אלף ל-102 אלף ₪, כ-+24%), בעוד הכנסות <b>אלקטרה יורדות</b> (מ-90 ל-64 אלף ₪, כ-29%-).
+          התלות בערוץ בודד פוחתת — זה חיובי לחוסן — אך כדאי לוודא שהצמיחה במזומן/סליקה היא בת-קיימא ולא חד-פעמית.`
+  },
+  {
+    type:"opp", tag:"הזדמנות", icon:"💡",
+    title:"עלות המכר היא מנוף ההשפעה הגדול",
+    body:`עלות המכר מהווה כ-<b>61% מההכנסות</b> (~183,000 ₪). בגלל ההיקף, גם שיפור קטן משפיע מאוד:
+          <b>הוזלה של 3% מול ספקים ≈ חיסכון של כ-9,000 ₪ בחודש</b> — כמעט מאזנת לבדה את ההפסד התפעולי.
+          שווה לבחון מו״מ מחודש מול 2–3 הספקים הגדולים.`
+  },
+  {
+    type:"opp", tag:"תוכנית פעולה", icon:"🎯",
+    title:"היעד: לסגור פער של כ-54,000 ₪ בחודש",
+    body:`כדי להגיע לאיזון תזרימי צריך שילוב של <b>הגדלת הכנסות והקטנת הוצאות</b> בהיקף מצטבר של ~54 אלף ₪.
+          בדוח נגדיר יחד <b>יעדי הכנסה לעבור</b> (מזומן/סליקה) ו<b>יעדי הוצאה לא לחרוג</b> (תפעול/מימון),
+          ונראה בזמן אמת איך כל יעד דוחף את יתרת הסגירה חזרה לכיוון הירוק.`
+  },
+];
+
+const PAL = {
+  risk:{t:"t-risk",n:"n-risk"}, warn:{t:"t-warn",n:"n-warn"},
+  opp:{t:"t-opp",n:"n-opp"},   info:{t:"t-info",n:"n-info"},
+};
+
+function render(list){
+  document.getElementById("insights").innerHTML = list.map((it,i)=>{
+    const p=PAL[it.type];
+    return `<div class="insight">
+      <div class="num ${p.n}">${i+1}</div>
+      <div class="c">
+        <div class="htop">
+          <h3>${it.icon} ${it.title}</h3>
+          <span class="tagi ${p.t}">${it.tag}</span>
+        </div>
+        <p>${it.body}</p>
+      </div>
+    </div>`;
+  }).join("");
+}
+render(INSIGHTS);
+
+/* "הפקה מחדש" — בדמו רק מערבב מעט את הסדר/הניסוח כדי להמחיש; בפועל יקרא ל-AI */
+document.getElementById("regen").addEventListener("click",function(){
+  const btn=this; btn.textContent="↻ מפיק תובנות…"; btn.disabled=true;
+  let n=0; const order=[...INSIGHTS];
+  // המחשה ויזואלית בלבד
+  setTimeout(()=>{ render(order); btn.textContent="↻ הפק תובנות מחדש"; btn.disabled=false; }, 650);
+});
+</script>
+</body>
+</html>

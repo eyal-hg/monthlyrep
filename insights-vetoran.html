@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>תובנות · דוח חודשי — וטרינר תורן בע״מ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --navy:#123a5e; --navy-d:#0e2c49; --navy-bar:#0f3050;
+  --ink:#14304d; --muted:#5a6b7b; --soft:#94a3b3;
+  --logo:#13a3e0; --logo-d:#0e84c7;
+  --panel:#e9f4fb; --panel-2:#dff0f9; --line:#e4ebf2; --line-2:#d4e0ec;
+  --teal:#37b6ad;
+  --pos:#13895b; --neg:#d6453c; --warn:#c98404;
+  --pos-s:#e7f7ef; --neg-s:#fdeceb; --warn-s:#fdf4e3; --info-s:#e9f4fb;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#e7ecf3;color:var(--ink);
+  font-family:"Heebo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased;font-size:14px;line-height:1.55}
+button{font-family:inherit;cursor:pointer}
+
+.stage{padding:30px 20px 70px;display:flex;flex-direction:column;align-items:center;gap:14px}
+
+/* ===== landscape page (A4 ratio) ===== */
+.page{width:1086px;max-width:100%;background:#fff;box-shadow:0 24px 60px rgba(14,40,70,.18);
+  border-radius:6px;overflow:hidden;position:relative;display:flex;flex-direction:column;min-height:768px}
+
+/* top navy bar */
+.topbar{height:34px;background:linear-gradient(90deg,var(--navy-bar),#15436e);flex:0 0 auto}
+
+/* header */
+.header{position:relative;padding:26px 40px 20px;display:flex;align-items:flex-start;justify-content:space-between;gap:30px;overflow:hidden}
+.ribbon{position:absolute;inset:0 auto 0 0;width:460px;pointer-events:none;overflow:hidden}
+.ribbon i{position:absolute;top:-30px;bottom:-30px;border-radius:46%}
+.ribbon .r1{left:-180px;width:430px;background:linear-gradient(160deg,#eef7fc,#dceef8);
+  transform:rotate(-8deg)}
+.ribbon .r2{left:-150px;width:360px;background:linear-gradient(160deg,#e7f4f1,#d7edf5);
+  transform:rotate(-13deg);opacity:.7}
+
+.logo{position:relative;z-index:2;display:flex;align-items:center;gap:14px;padding-top:4px}
+.logo .mark{display:block}
+.logo .nm{font-size:23px;font-weight:800;color:var(--ink);letter-spacing:.3px}
+
+.titleblock{position:relative;z-index:2;text-align:start;max-width:560px}
+.eyebrow{display:inline-block;font-size:11.5px;font-weight:800;color:var(--logo-d);
+  background:var(--panel);padding:4px 11px;border-radius:999px;letter-spacing:.3px;margin-bottom:8px}
+.titleblock h1{margin:0;font-size:27px;font-weight:900;color:var(--ink);letter-spacing:-.5px}
+.titleblock .company{margin-top:10px;font-size:15px;font-weight:800;color:var(--navy)}
+.cos{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.co{display:inline-flex;align-items:center;gap:6px;background:#f4f8fc;border:1px solid var(--line);
+  border-radius:999px;padding:4px 11px;font-size:11.5px;font-weight:700;color:var(--ink)}
+.co .d{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+.scope{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:9px}
+.scope .lab{font-size:11.5px;color:var(--muted);font-weight:600}
+.scope .ac{display:inline-flex;align-items:center;gap:6px;background:#eef5fb;border:1px solid var(--line-2);
+  border-radius:999px;padding:4px 11px;font-size:11.5px;font-weight:700;color:var(--navy)}
+.titleblock .date{font-size:12.5px;color:var(--muted);margin-top:10px}
+
+.pageinfo{padding:0 40px;color:var(--soft);font-size:12px;font-weight:600;margin-top:-4px}
+
+/* content */
+.content{padding:14px 40px 8px;flex:1}
+
+/* key figures strip (clean, no cubes) */
+.figs{display:flex;align-items:stretch;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:22px}
+.fig{flex:1;padding:14px 18px;border-inline-start:1px solid var(--line)}
+.fig:first-child{border-inline-start:none}
+.fig .k{font-size:11.5px;color:var(--muted);font-weight:700}
+.fig .v{font-size:21px;font-weight:900;color:var(--ink);letter-spacing:-.4px;margin-top:3px}
+.fig .v.neg{color:var(--neg)} .fig .v.pos{color:var(--pos)}
+.fig .d{font-size:11px;font-weight:700;margin-top:2px;color:var(--soft)}
+.fig .d.dn{color:var(--neg)} .fig .d.up{color:var(--pos)}
+
+/* section header pill (matches report table header) */
+.sec{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--line-2);
+  border-radius:12px;padding:11px 18px;margin-bottom:14px}
+.sec h2{margin:0;font-size:18px;font-weight:900;color:var(--navy)}
+.sec .ai{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;color:var(--logo-d)}
+.sec .ai .dot{width:7px;height:7px;border-radius:50%;background:var(--logo);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(19,163,224,.5)}70%{box-shadow:0 0 0 6px rgba(19,163,224,0)}100%{box-shadow:0 0 0 0 rgba(19,163,224,0)}}
+
+/* about */
+.about{font-size:12.5px;color:var(--muted);line-height:1.65;margin:0 2px 18px;padding-inline-start:12px;border-inline-start:3px solid var(--panel-2)}
+.about b{color:var(--ink)}
+
+/* insights — two columns (landscape), clean */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
+.ins{padding:15px 2px;border-bottom:1px solid var(--line)}
+.ins h3{margin:0 0 5px;font-size:15px;font-weight:800;color:var(--ink)}
+.ins .tag{font-size:10px;font-weight:800;padding:2px 9px;border-radius:999px}
+.tag.t-risk{background:var(--neg-s);color:#b5362a}
+.tag.t-warn{background:var(--warn-s);color:#9a6604}
+.tag.t-opp{background:var(--pos-s);color:#0f7a50}
+.tag.t-info{background:var(--info-s);color:var(--logo-d)}
+.ins p{margin:0;font-size:12.5px;color:#46566c;line-height:1.6}
+.ins p b{color:var(--ink)}
+
+/* footer */
+.footer{display:flex;align-items:center;justify-content:space-between;padding:12px 40px;
+  border-top:1px solid var(--line);color:var(--soft);font-size:11px;font-weight:600;margin-top:8px}
+.footer .hk b{color:var(--logo-d)}
+
+/* screen actions */
+.actions{display:flex;gap:10px}
+.gbtn{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line-2);
+  border-radius:10px;padding:9px 15px;font-weight:700;font-size:13px;color:var(--muted)}
+.gbtn:hover{color:var(--logo-d);border-color:#bfe0f4;background:var(--panel)}
+
+@page{ size:297mm 210mm; margin:0; }
+@media print{
+  html,body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .stage{padding:0}
+  .page{box-shadow:none;border-radius:0;width:297mm;min-height:209mm}
+  .actions{display:none}
+}
+@media(max-width:1120px){ .page{width:100%} .header{padding-inline:24px} .content{padding-inline:24px} .ribbon{display:none} }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="page">
+    <div class="topbar"></div>
+
+    <!-- header (matches report template) -->
+    <div class="header">
+      <div class="ribbon"><i class="r1"></i><i class="r2"></i></div>
+      <div class="logo">
+        <svg class="mark" viewBox="0 0 72 44" width="60" height="37" aria-label="HK">
+          <rect x="2" y="4" width="8" height="36" fill="#1ba1e2"/>
+          <rect x="22" y="4" width="8" height="36" fill="#1ba1e2"/>
+          <rect x="2" y="18" width="28" height="8" fill="#1ba1e2"/>
+          <rect x="40" y="4" width="8" height="36" fill="#1ba1e2"/>
+          <polygon points="48,22 70,4 70,15 57,22" fill="#4cc0f3"/>
+          <polygon points="48,22 70,40 70,29 57,22" fill="#0d80c4"/>
+        </svg>
+        <span class="nm">חזות קריספין</span>
+      </div>
+      <div class="titleblock">
+        <span class="eyebrow">דף מקדים · תובנות לפני הדוח</span>
+        <h1>דוח חודשי עבור מרץ 2026 – מאי 2026</h1>
+        <div class="company" id="company"></div>
+        <div class="cos" id="cos"></div>
+        <div class="scope" id="scope"></div>
+        <div class="date">מועד הפקת הדוח&nbsp; 02.06.2026 | 14:02</div>
+      </div>
+    </div>
+    <div class="pageinfo">עמוד מקדים · תובנות</div>
+
+    <div class="content">
+      <!-- balances · מאי 2026 -->
+      <div class="figs">
+        <div class="fig"><div class="k">יתרת פתיחה · מאי</div><div class="v">609,853 ₪</div></div>
+        <div class="fig"><div class="k">יתרת סגירה · מאי</div><div class="v">511,689 ₪</div></div>
+        <div class="fig"><div class="k">שינוי בעו״ש · מאי</div><div class="v neg">-98,164 ₪</div></div>
+      </div>
+
+      <div class="sec">
+        <h2>5 תובנות מרכזיות</h2>
+      </div>
+
+      <div class="grid" id="insights"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* החברות בדוח. חברה אחת = שם בודד; כמה חברות = דוח מאוחד עם צ׳יפים */
+const COMPANIES = [
+  {name:"וטרינר תורן בע״מ", color:"#1f7ae0"},
+  /* לדוגמת דוח מאוחד — הסירו את ההערה מהשורות הבאות:
+  {name:"וטרינר תורן — תל אביב בע״מ",   color:"#0ea5a5"},
+  {name:"וטרינר תורן — הוד השרון בע״מ", color:"#7a5cf0"},
+  */
+];
+const GROUP_NAME = "קבוצת וטרינר תורן";
+
+(function renderHeader(){
+  const c=document.getElementById("company"), cos=document.getElementById("cos");
+  if(COMPANIES.length>1){
+    c.textContent = `דוח מאוחד · ${GROUP_NAME} · ${COMPANIES.length} חברות`;
+    cos.innerHTML = COMPANIES.map(co=>
+      `<span class="co"><span class="d" style="background:${co.color}"></span>${co.name}</span>`).join("");
+  }else{
+    c.textContent = COMPANIES[0].name;
+    cos.innerHTML = "";
+  }
+})();
+
+/* היקף החשבונות: "all" = כל החשבונות, או מערך שמות חשבונות נבחרים */
+const ACCOUNTS = "all";
+// const ACCOUNTS = ["עו״ש 12-345-678", "אשראי 12-345-901"];
+(function renderScope(){
+  const el=document.getElementById("scope");
+  if(ACCOUNTS==="all"){
+    el.innerHTML = `<span class="lab">חשבונות:</span><span class="ac">🏦 כל החשבונות</span>`;
+  }else{
+    el.innerHTML = `<span class="lab">חשבונות נבחרים:</span>` +
+      ACCOUNTS.map(a=>`<span class="ac">🏦 ${a}</span>`).join("");
+  }
+})();
+
+const INSIGHTS = [
+  { type:"risk", tag:"דורש תשומת לב", tcls:"t-risk",
+    title:"מאי שבר רצף חיובי של חודשיים",
+    body:`אחרי מרץ (<b>+84,798 ₪</b>) ואפריל (<b>+147,722 ₪</b>), התזרים החודשי במאי התהפך ל<b>‎-96,717 ₪</b>, ויתרת הבנק ירדה מ-609,853 ל-<b>511,689 ₪</b> — שחיקה של ~98K בחודש בודד.` },
+  { type:"opp", tag:"נקודת אור", tcls:"t-opp",
+    title:"ההכנסות לא היו הבעיה — הן צמחו",
+    body:`סך ההכנסות עלה בכל חודש: <b>2.79M → 2.90M → 2.97M ₪</b>. ההיפוך במאי לא נבע מירידה במכירות אלא כולו מצד ההוצאות.` },
+  { type:"warn", tag:"שורש ההיפוך", tcls:"t-warn",
+    title:"קפיצת שכר וחיובים חד-פעמיים במאי",
+    body:`ההוצאות במאי זינקו ל-<b>2.21M ₪</b> (מ-~1.95M). עיקר הקפיצה: <b>שכר וסוציאליות 1,196,487 ₪</b> (כ-+173K), עלייה במוסדות מס, וחיוב חריג <b>'כרטיס אשראי ללא פירוט' 37,953 ₪</b>.` },
+  { type:"info", tag:"חוזקה מבנית", tcls:"t-info",
+    title:"רווחיות גולמית גבוהה ויציבה (~73%)",
+    body:`הרווח הגולמי ~<b>2.1M ₪ בחודש</b>, שיעור יציב ב-<b>73%–75%</b>. ליבת העסק רווחית מאוד; האתגר הוא ההוצאות הקבועות, ובראשן השכר (~40% מההכנסות).` },
+  { type:"info", tag:"פילוח סניפים", tcls:"t-info",
+    title:"סניף תל אביב במגמת ירידה",
+    body:`הכנסות תל אביב ירדו מ-102,748 ₪ במרץ ל-<b>58,575 ₪</b> במאי (כ-43%-), בעוד הוד השרון תנודתי. שווה לבחון את הסיבה לקראת הפגישה.` },
+];
+function render(list){
+  document.getElementById("insights").innerHTML = list.map((it)=>`
+    <div class="ins ${it.type}">
+      <h3>${it.title}</h3>
+      <p>${it.body}</p>
+    </div>`).join("");
+}
+render(INSIGHTS);
+</script>
+</body>
+</html>

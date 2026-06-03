@@ -109,6 +109,27 @@ tr.profit.big th.cat{color:#0f6f48}
 tr.profit.big .cell{color:#0f6f48;font-size:15px}
 tr.profit.big th.cat::before{background:var(--positive)}
 
+/* ---- drill-down: indent, caret, subgroups, sublines ---- */
+th.cat.lvl1{padding-inline-start:30px}
+th.cat.lvl2{padding-inline-start:54px}
+th.cat.lvl3{padding-inline-start:78px}
+/* שורת קטגוריה תפעולית (רמה 1) */
+tr.catrow th.cat,tr.catrow .cell{font-weight:700}
+tr.catrow:hover td,tr.catrow:hover th.cat{background:#f4f8fd}
+.caret,.caret-sp{display:inline-block;width:15px;text-align:center;color:var(--text-soft);font-size:10px;vertical-align:1px;margin-inline-end:5px}
+.caret{cursor:pointer;border-radius:4px}
+.caret:hover{color:var(--accent);background:var(--accent-soft)}
+.lbl{vertical-align:middle}
+/* תת-קבוצה (קבועות/משתנות) — שורת ביניים עם סכום */
+tr.subgroup th.cat,tr.subgroup .cell{font-weight:800;color:#33486a}
+tr.subgroup td,tr.subgroup th.cat{background:#eef4fb}
+tr.subgroup:hover td,tr.subgroup:hover th.cat{background:#e7f0fa}
+/* שורות פירוט (ידוע/פתוח) */
+tr.subline th.cat{color:var(--text-muted);font-weight:600;font-size:12.5px}
+tr.subline .cell{color:var(--text-muted);font-weight:500}
+tr.subline td,tr.subline th.cat{background:#fbfcfe}
+tr.subline.open th.cat,tr.subline.open .cell{color:var(--warn);font-weight:700}
+
 /* editable cell states */
 .cell.edit{cursor:pointer;position:relative;transition:.12s}
 .cell.edit:hover{box-shadow:inset 0 0 0 2px #bcd9f6;border-radius:8px}
@@ -189,6 +210,7 @@ tr.profit.big th.cat::before{background:var(--positive)}
     <div class="card-bar">
       <div class="ttl"><span class="ic">📈</span> דו״ח תזרים חודשי</div>
       <div class="toolbar">
+        <a class="pill" href="insights.html" style="text-decoration:none">📄 דף תובנות</a>
         <span class="pill"><span class="mut">טווח:</span> מרץ–ספטמבר 2026
           <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
@@ -237,20 +259,50 @@ const INCOME = [
   {id:"electra",  label:"הכנסות ממכירות - אלקטרה", a:[90000,87980, 63769], cur:40000},
   {id:"shipping", label:"הכנסות - חברות שילוח",    a:[29000,30698, 28960], cur:18000},
 ];
-/* group: cogs = עלות המכר | opex = הוצאות תפעוליות | fin = מימון ומס */
-const EXPENSE = [
-  {id:"suppliers",label:"ספקים / חומר גלם",   a:[150000,160000,155000], cur:90000, group:"cogs"},
-  {id:"subcon",   label:"קבלני משנה",          a:[ 28000, 31000, 26000], cur:14000, group:"cogs"},
-  {id:"salary",   label:"שכר עבודה",          a:[ 95000, 98000, 99000], cur:95000, group:"opex"},
-  {id:"rent",     label:"שכירות",             a:[ 22000, 22000, 22000], cur:22000, group:"opex"},
-  {id:"opex",     label:"הוצאות תפעול",       a:[ 18000, 19500, 17800], cur: 9000, group:"opex"},
-  {id:"finance",  label:"מימון ועמלות בנק",    a:[  9000,  9500,  8800], cur: 4500, group:"fin"},
-  {id:"tax",      label:"מוסדות מס",          a:[ 30000, 32165, 10371], cur: 6000, group:"fin"},
+/* cogs: known = הסכום הידוע/מחויב בתזרים (היתר נותר פתוח לתשלום)
+   opex: כל קטגוריה מתפצלת לפי fixed (קבוע/משתנה) ולתיאורים (items) */
+const COGS_LINES = [
+  {id:"suppliers",label:"קניות מלאי", a:[150000,160000,155000], cur:90000, group:"cogs", known:70000},
+  {id:"subcon",   label:"קבלני משנה", a:[ 28000, 31000, 26000], cur:14000, group:"cogs", known:12000},
 ];
+// הוצאות תפעוליות — קטגוריה ▸ קבועות/משתנות ▸ תיאורים
+const OPEX_CATS = [
+  {id:"salary", label:"שכר עבודה", items:[
+    {id:"sal_base", label:"שכר בסיס",          fixed:true,  a:[70000,72000,74000], cur:70000},
+    {id:"sal_soc",  label:"תנאים סוציאליים",    fixed:true,  a:[15000,15000,16000], cur:15000},
+    {id:"sal_bonus",label:"בונוסים ועמלות",     fixed:false, a:[ 6000, 7000, 6000], cur: 5000},
+    {id:"sal_ot",   label:"שעות נוספות",        fixed:false, a:[ 4000, 4000, 3000], cur: 3000},
+  ]},
+  {id:"rent", label:"שכירות", items:[
+    {id:"rent_office",label:"שכירות משרד",       fixed:true, a:[18000,18000,18000], cur:18000},
+    {id:"rent_mgmt",  label:"דמי ניהול ואחזקה",  fixed:true, a:[ 4000, 4000, 4000], cur: 4000},
+  ]},
+  {id:"opex", label:"הוצאות תפעול", items:[
+    {id:"op_sw",   label:"מנויים ותוכנה",   fixed:true,  a:[6000,6000,6000], cur:6000},
+    {id:"op_mat",  label:"חומרים מתכלים",   fixed:false, a:[8000,9500,7800], cur:2000},
+    {id:"op_maint",label:"אחזקה ותיקונים",  fixed:false, a:[4000,4000,4000], cur:1000},
+  ]},
+  {id:"marketing", label:"פרסום ושיווק", items:[
+    {id:"mkt_ret", label:"ריטיינר דיגיטל",  fixed:true,  a:[5000,5000,5000],  cur:5000},
+    {id:"mkt_camp",label:"קמפיינים ומדיה",  fixed:false, a:[9000,16000,7000], cur:2000},
+  ]},
+  {id:"tax", label:"מוסדות מס", items:[
+    {id:"tax_vat", label:"מע״מ",            fixed:false, a:[20000,22000, 5000], cur:4000},
+    {id:"tax_adv", label:"מקדמות מס הכנסה",  fixed:false, a:[10000,10165, 5371], cur:2000},
+  ]},
+];
+const OPEX_LINES = OPEX_CATS.flatMap(c=> c.items.map(it=>({...it, group:"opex", cat:c.id})));
+const FIN_LINES = [
+  {id:"finance",  label:"מימון ועמלות בנק", a:[ 9000, 9500, 8800], cur:4500, group:"fin"},
+  {id:"deposits", label:"פיקדונות והשקעות", a:[12000,12000,12000], cur:6000, group:"fin"},
+  {id:"loan",     label:"תשלומי הלוואה",     a:[ 8000, 8000, 8000], cur:8000, group:"fin"},
+  {id:"owners",   label:"משיכות בעלים",      a:[15000,10000,20000], cur:5000, group:"fin"},
+];
+const EXPENSE = [...COGS_LINES, ...OPEX_LINES, ...FIN_LINES];
 const GROUPS = {
-  cogs: {label:"עלות המכר",          total:"סה״כ עלות המכר"},
-  opex: {label:"הוצאות תפעוליות",     total:"סה״כ הוצאות תפעוליות"},
-  fin:  {label:"הוצאות מימון ומס",    total:"סה״כ מימון ומס"},
+  cogs: {label:"עלות המכר",                   total:"סה״כ עלות המכר"},
+  opex: {label:"הוצאות תפעוליות",              total:"סה״כ הוצאות תפעוליות"},
+  fin:  {label:"הוצאות השקעות, מימון ובעלים",  total:"סה״כ השקעות, מימון ובעלים"},
 };
 const LINES = {}; [...INCOME,...EXPENSE].forEach(l=>LINES[l.id]=l);
 const isIncome = id => !!INCOME.find(l=>l.id===id);
@@ -259,6 +311,16 @@ const curActual = id => LINES[id].cur;
 
 const overrides = {};
 const okey=(id,mk)=>id+"|"+mk;
+
+/* drill-down state: מפתחות שמקופלים כברירת מחדל (נפתחים בלחיצה) */
+const collapsed = new Set();
+COGS_LINES.forEach(l=> collapsed.add("cogs/"+l.id));
+OPEX_CATS.forEach(cat=>{
+  collapsed.add("opex/cat/"+cat.id);
+  collapsed.add("opex/cat/"+cat.id+"/f");
+  collapsed.add("opex/cat/"+cat.id+"/v");
+});
+function toggle(key){ collapsed.has(key)?collapsed.delete(key):collapsed.add(key); render(); }
 
 function colEffective(id, ci){
   const c=COLS[ci];
@@ -296,6 +358,18 @@ function cgTot(g){ let s=0; EXPENSE.forEach(l=>{ if(l.group===g) s+=curActual(l.
 function curGross(){ return curIncome()-cgTot("cogs"); }
 function curOperating(){ return curGross()-cgTot("opex"); }
 function curCashflow(){ return curOperating()-cgTot("fin"); }
+
+/* ---- drill-down helpers ---- */
+// קטגוריה תפעולית: סכום כל התיאורים שלה / לפי קבוע-משתנה
+const catItems = catId => OPEX_LINES.filter(l=>l.cat===catId);
+function catTot(ci,catId){ let s=0; catItems(catId).forEach(l=>s+=colEffective(l.id,ci)); return s; }
+function curCatTot(catId){ let s=0; catItems(catId).forEach(l=>s+=curActual(l.id)); return s; }
+function catSub(ci,catId,fixed){ let s=0; catItems(catId).forEach(l=>{ if(!!l.fixed===fixed) s+=colEffective(l.id,ci); }); return s; }
+function curCatSub(catId,fixed){ let s=0; catItems(catId).forEach(l=>{ if(!!l.fixed===fixed) s+=curActual(l.id); }); return s; }
+// עלות המכר: ידוע/מחויב מול נותר פתוח
+const knownVal = id => LINES[id].known||0;
+function openVal(id,ci){ return colEffective(id,ci)-knownVal(id); }
+function curOpenVal(id){ return curActual(id)-knownVal(id); }
 function balances(){
   const open={},close={}; let prev=null;
   COLS.forEach((c,ci)=>{
@@ -350,22 +424,36 @@ function lineCellCol(id,ci){
   return out;
 }
 
-function compRow(label,cls,valFn,actFn,colorMode){
+// read-only value cells (avg / month / current-dual)
+function valueCells(valFn,actFn,colorMode){
   let cells="";
   COLS.forEach((c,ci)=>{
     const v=valFn(ci);
     const band = c.status==="current" ? " curband s-tgt" : (c.type==="avg"?" avgc":"");
     cells+=`<td class="cell${band} ${cellColor(v,colorMode)} ${v==null?"empty":""}">${v==null?"—":fmt(v)}</td>`;
     if(c.status==="current"){
-      const a=actFn(ci);
+      const a=actFn?actFn(ci):null;
       cells+=`<td class="cell curband ${cellColor(a,colorMode)} ${a==null?"empty":""}">${a==null?"—":fmt(a)}</td>`;
     }
   });
-  return `<tr class="${cls}"><th class="cat">${label}</th>${cells}</tr>`;
+  return cells;
 }
-function dataRow(l){
-  let cells=""; COLS.forEach((c,ci)=> cells+=lineCellCol(l.id,ci));
-  return `<tr class="data"><th class="cat">${l.label}</th>${cells}</tr>`;
+function editCells(id){ let cells=""; COLS.forEach((c,ci)=> cells+=lineCellCol(id,ci)); return cells; }
+
+function caret(key,expandable){
+  if(!expandable) return `<span class="caret-sp"></span>`;
+  return `<span class="caret" data-key="${key}">${collapsed.has(key)?"◂":"▾"}</span>`;
+}
+function compRow(label,cls,valFn,actFn,colorMode){
+  return `<tr class="${cls}"><th class="cat">${label}</th>${valueCells(valFn,actFn,colorMode)}</tr>`;
+}
+// computed row, indented + optional caret
+function rowComputed(key,label,level,cls,valFn,actFn,colorMode,expandable){
+  return `<tr class="${cls}"><th class="cat lvl${level}">${caret(key,expandable)}<span class="lbl">${label}</span></th>${valueCells(valFn,actFn,colorMode)}</tr>`;
+}
+// editable line, indented + optional caret
+function rowEdit(id,level,expandable,key){
+  return `<tr class="data"><th class="cat lvl${level}">${caret(key,expandable)}<span class="lbl">${LINES[id].label}</span></th>${editCells(id)}</tr>`;
 }
 function sectionRow(label,exp){
   const span=COLS.reduce((s,c)=>s+(c.status==="current"?2:1),0);
@@ -379,10 +467,6 @@ function renderTable(){
   const closeF=ci=>b.close[ci], closeA=ci=>b.open[ci]==null?null:b.open[ci]+curActNet;
   const netF=ci=>colTotals(ci).net, netA=()=>curActNet;
 
-  const cogs=EXPENSE.filter(l=>l.group==="cogs");
-  const opex=EXPENSE.filter(l=>l.group==="opex");
-  const fin =EXPENSE.filter(l=>l.group==="fin");
-
   let rows="";
   // ----- top summary (bank balances) -----
   rows += compRow("יתרת פתיחה בנק", "summary", openF, openA, "balance");
@@ -391,29 +475,49 @@ function renderTable(){
 
   // ----- income -----
   rows += sectionRow("הכנסות",false);
-  INCOME.forEach(l=> rows+=dataRow(l));
+  INCOME.forEach(l=> rows+=rowEdit(l.id,1,false));
   rows += compRow("סה״כ הכנסות", "total income", ci=>totIncome(ci), ()=>curIncome(), null);
 
-  // ----- cost of sales -> gross profit -----
+  // ----- cost of sales (drill: ידוע / נותר פתוח) -> gross profit -----
   rows += sectionRow(GROUPS.cogs.label,true);
-  cogs.forEach(l=> rows+=dataRow(l));
+  EXPENSE.filter(l=>l.group==="cogs").forEach(l=>{
+    const key="cogs/"+l.id;
+    rows += rowEdit(l.id,1,true,key);
+    if(!collapsed.has(key)){
+      rows += rowComputed(key+"/k","ידוע · מחויב בתזרים",2,"subline", ci=>knownVal(l.id), ()=>knownVal(l.id), null,false);
+      rows += rowComputed(key+"/o","נותר פתוח לתשלום",2,"subline open", ci=>openVal(l.id,ci), ()=>curOpenVal(l.id), null,false);
+    }
+  });
   rows += compRow(GROUPS.cogs.total, "total expense", ci=>gTot(ci,"cogs"), ()=>cgTot("cogs"), null);
   rows += compRow("רווח גולמי", "profit", ci=>grossProfit(ci), ()=>curGross(), "flow");
 
-  // ----- operating expenses -> operating profit -----
+  // ----- operating expenses (drill: קטגוריה -> קבועות/משתנות -> תיאורים) -> operating profit -----
   rows += sectionRow(GROUPS.opex.label,true);
-  opex.forEach(l=> rows+=dataRow(l));
+  OPEX_CATS.forEach(cat=>{
+    const ckey="opex/cat/"+cat.id;
+    rows += rowComputed(ckey, cat.label, 1, "catrow", ci=>catTot(ci,cat.id), ()=>curCatTot(cat.id), null, true);
+    if(!collapsed.has(ckey)){
+      [["f","קבועות",true],["v","משתנות",false]].forEach(([sk,slabel,isFixed])=>{
+        const items = catItems(cat.id).filter(l=>!!l.fixed===isFixed);
+        if(!items.length) return;
+        const skey=ckey+"/"+sk;
+        rows += rowComputed(skey, slabel, 2, "subgroup", ci=>catSub(ci,cat.id,isFixed), ()=>curCatSub(cat.id,isFixed), null, true);
+        if(!collapsed.has(skey)) items.forEach(l=> rows+=rowEdit(l.id,3,false));
+      });
+    }
+  });
   rows += compRow(GROUPS.opex.total, "total expense", ci=>gTot(ci,"opex"), ()=>cgTot("opex"), null);
   rows += compRow("רווח תפעולי", "profit", ci=>operatingProfit(ci), ()=>curOperating(), "flow");
 
-  // ----- finance & tax -> cashflow profit -----
+  // ----- investments, finance & owners -> cashflow profit -----
   rows += sectionRow(GROUPS.fin.label,true);
-  fin.forEach(l=> rows+=dataRow(l));
+  EXPENSE.filter(l=>l.group==="fin").forEach(l=> rows+=rowEdit(l.id,1,false));
   rows += compRow(GROUPS.fin.total, "total expense", ci=>gTot(ci,"fin"), ()=>cgTot("fin"), null);
   rows += compRow("רווח תזרימי", "profit big", ci=>cashflowProfit(ci), ()=>curCashflow(), "flow");
 
   document.getElementById("report").innerHTML = `<thead>${headHTML()}</thead><tbody>${rows}</tbody>`;
   document.querySelectorAll("td.cell.edit").forEach(td=> td.addEventListener("click",()=>openEditor(td)));
+  document.querySelectorAll(".caret").forEach(el=> el.addEventListener("click",e=>{ e.stopPropagation(); toggle(el.dataset.key); }));
 }
 
 /* ============================ EDITOR ============================ */
